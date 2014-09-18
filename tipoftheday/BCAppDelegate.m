@@ -13,9 +13,85 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
+    
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+    
+//    Initialize NSUserDefaults defaults values for this app
+    
+    // Check the data
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    if ([defaults valueForKey:@"fractionOdds"] == nil) {
+        [defaults setValue:[NSNumber numberWithBool:NO] forKey:@"fractionOdds"];
+        [defaults synchronize];
+        NSLog(@"Data initialized!");
+    }
+    
+//    OtherLevels SDK Init
+    
+//    [OtherLevels startSessionWithLaunchOptions:launchOptions];
+    [OtherLevels debugSessionWithLaunchOptions:launchOptions];
+    
+    // insert this, in addition to code already in didFinishLaunchingWithOptions
+    [[UIApplication sharedApplication] registerForRemoteNotificationTypes:
+     (UIRemoteNotificationTypeAlert |
+      UIRemoteNotificationTypeBadge |
+      UIRemoteNotificationTypeSound )];
+    
+//    GoogleAnalytics SDK Init
+    
+    // Optional: automatically send uncaught exceptions to Google Analytics.
+    [GAI sharedInstance].trackUncaughtExceptions = YES;
+    
+    // Optional: set Google Analytics dispatch interval to e.g. 20 seconds.
+    [GAI sharedInstance].dispatchInterval = 20;
+    
+    // Optional: set Logger to VERBOSE for debug information.
+    [[[GAI sharedInstance] logger] setLogLevel:kGAILogLevelVerbose];
+    
+    // Initialize tracker. Replace with your tracking ID.
+    [[GAI sharedInstance] trackerWithTrackingId:@"UA-53019916-2"];
+    
+    //    Test to list every font available
+    
+//    for (NSString* family in [UIFont familyNames])
+//    {
+//        NSLog(@"%@", family);
+//        for (NSString* name in [UIFont fontNamesForFamilyName: family])
+//        {
+//            NSLog(@"  %@", name);
+//        }
+//    }
+    
     return YES;
 }
-							
+
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
+{
+    [OtherLevels didReceiveNotification:application
+                           notification:userInfo];
+}
+
+- (void)application:(UIApplication *)application
+didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
+{
+    UIRemoteNotificationType types = [[UIApplication sharedApplication] enabledRemoteNotificationTypes];
+    if(types != UIRemoteNotificationTypeNone){
+        
+        NSLog(@"%@", [deviceToken description]);
+        // store the device token here, for later use
+        [[NSUserDefaults standardUserDefaults] setObject:[deviceToken description] forKey:@"device_token"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        
+        // OtherLevels Register device cald
+        
+//        If you are unable to determine a Tracking ID at this point, OtherLevels will generate and store one for you. In this case you will need to do as shown below instead of the above @registerDevice@ call. The OtherLevels generated Tracking ID will then become the App's default Tracking ID until you overwrite it.
+        
+            // OtherLevels Register device call
+            [OtherLevels registerDevice:[deviceToken description]
+                         withTrackingId:@""];
+    }
+}
+
 - (void)applicationWillResignActive:(UIApplication *)application
 {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
