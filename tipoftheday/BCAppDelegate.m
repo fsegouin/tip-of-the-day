@@ -7,6 +7,9 @@
 //
 
 #import "BCAppDelegate.h"
+#import "Reachability.h"
+#import "CWStatusBarNotification.h"
+#import "HexColor.h"
 
 @implementation BCAppDelegate
 
@@ -50,6 +53,38 @@
     
     // Initialize tracker. Replace with your tracking ID.
     [[GAI sharedInstance] trackerWithTrackingId:@"UA-53019916-2"];
+    
+    // Allocate a reachability object
+    Reachability* reach = [Reachability reachabilityWithHostname:@"www.google.com"];
+    
+    // Reachability methods
+    
+    // Set the blocks
+    reach.reachableBlock = ^(Reachability*reach)
+    {
+        // keep in mind this is called on a background thread
+        // and if you are updating the UI it needs to happen
+        // on the main thread, like this:
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            NSLog(@"REACHABLE!");
+        });
+    };
+    
+    reach.unreachableBlock = ^(Reachability*reach)
+    {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            NSLog(@"UNREACHABLE!");
+            CWStatusBarNotification *notification = [CWStatusBarNotification new];
+            notification.notificationLabelBackgroundColor = [UIColor colorWithHexString:@"#c0392b"];
+            notification.notificationLabelTextColor = [UIColor whiteColor];
+            [notification displayNotificationWithMessage:@"Please check your network connection and try again."
+                                             forDuration:3.0f];
+        });
+    };
+    
+    // Start the notifier, which will cause the reachability object to retain itself!
+    [reach startNotifier];
     
     //    Test to list every font available
     

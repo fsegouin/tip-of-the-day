@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface BCMasterViewController : UITableViewController
+@interface BCMasterViewController : UITableViewController {
+    UIRefreshControl *refreshControl;
+}
 
 @end

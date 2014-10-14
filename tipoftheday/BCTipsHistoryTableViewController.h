@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface BCTipsHistoryTableViewController : UITableViewController
+@interface BCTipsHistoryTableViewController : UITableViewController {
+    UIRefreshControl *refreshControl;
+}
 
 @end

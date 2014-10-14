@@ -134,7 +134,7 @@
     NSString *teamName = [[[_selectedTeam name] uppercaseString] stringByReplacingOccurrencesOfString:@" " withString:@"-"];
     
     //    Debug purposes
-    teamName = @"PARIS-SAINT-GERMAIN";
+//    teamName = @"PARIS-SAINT-GERMAIN";
     
     [_objectManager getObjectsAtPath:[NSString stringWithFormat:@"/xml/all/injuries/?key=E46AJP2Z&language=en&timestamp=0&status=live&club=%@", teamName]
                           parameters:nil

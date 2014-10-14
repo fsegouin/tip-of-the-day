@@ -608,6 +608,9 @@
         NSLog(@"Bet365 link : %@", affiliateLink);
     }
     
+    else
+        NSLog(@"No Bet365 link found!");
+    
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:affiliateLink]];
 
 }

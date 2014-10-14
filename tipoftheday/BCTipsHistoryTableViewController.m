@@ -14,6 +14,7 @@
 #import "HexColor.h"
 #import "NSString+FontAwesome.h"
 #import "MONActivityIndicatorView.h"
+#import "CWStatusBarNotification.h"
 
 @interface BCTipsHistoryTableViewController ()
 
@@ -48,7 +49,12 @@
     _indicatorView.center = CGPointMake([UIScreen mainScreen].bounds.size.width/2, [UIScreen mainScreen].bounds.size.height/2-40);
     [self.view addSubview:_indicatorView];
     [self configureRestKit];
+    [self loadHotTipsHistory];
     [_indicatorView startAnimating];
+    
+    refreshControl = [[UIRefreshControl alloc]init];
+    [self.tableView addSubview:refreshControl];
+    [refreshControl addTarget:self action:@selector(loadHotTipsHistory) forControlEvents:UIControlEventValueChanged];
     
     // GA Screen Tracking
     
@@ -140,33 +146,46 @@
     [_objectManager addResponseDescriptor:responseDescriptor];
     [_objectManager addResponseDescriptor:responseDescriptor2];
     
-    [_objectManager getObjectsAtPath:@"/api/tips/hot/list/history/1/EN/0/10/"
-                                           parameters:nil
-                                              success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-                                                  NSDictionary *results = [mappingResult dictionary];
-                                                  _hotTipsHistoryStats = [results objectForKey:@"result.stats"];
-                                                  _hotTipsHistoryArray = [results objectForKey:@"result.tips"];
-                                                  if (![_indicatorView isHidden])
-                                                      [_indicatorView stopAnimating];
-                                                  [self.tableView reloadData];
-                                              }
-                                              failure:^(RKObjectRequestOperation *operation, NSError *error) {
-                                                  NSLog(@"What do you mean by 'there is an error?': %@", error);
-                                              }];
-}
-
-//- (void)loadHotTipsHistory
-//{
-//    [[RKObjectManager sharedManager] getObjectsAtPath:@"/api/tips/hot/list/history/1/EN/0/10/"
+//    [_objectManager getObjectsAtPath:@"/api/tips/hot/list/history/1/EN/0/10/"
 //                                           parameters:nil
 //                                              success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-////                                                  _hotTipOfTheDay = [mappingResult firstObject];
-////                                                  [self.tableView reloadData];
+//                                                  NSDictionary *results = [mappingResult dictionary];
+//                                                  _hotTipsHistoryStats = [results objectForKey:@"result.stats"];
+//                                                  _hotTipsHistoryArray = [results objectForKey:@"result.tips"];
+//                                                  if (![_indicatorView isHidden])
+//                                                      [_indicatorView stopAnimating];
+//                                                  [self.tableView reloadData];
 //                                              }
 //                                              failure:^(RKObjectRequestOperation *operation, NSError *error) {
 //                                                  NSLog(@"What do you mean by 'there is an error?': %@", error);
 //                                              }];
-//}
+}
+
+- (void)loadHotTipsHistory
+{
+    [_objectManager getObjectsAtPath:@"/api/tips/hot/list/history/1/EN/0/10/"
+                          parameters:nil
+                             success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+                                 NSDictionary *results = [mappingResult dictionary];
+                                 _hotTipsHistoryStats = [results objectForKey:@"result.stats"];
+                                 _hotTipsHistoryArray = [results objectForKey:@"result.tips"];
+                                 if (![_indicatorView isHidden])
+                                     [_indicatorView stopAnimating];
+                                 [self.tableView reloadData];
+                                 [refreshControl endRefreshing];
+                             }
+                             failure:^(RKObjectRequestOperation *operation, NSError *error) {
+                                 NSLog(@"What do you mean by 'there is an error?': %@", error);
+                                 if (![_indicatorView isHidden])
+                                     [_indicatorView stopAnimating];
+                                 [refreshControl endRefreshing];
+                                 CWStatusBarNotification *notification = [CWStatusBarNotification new];
+                                 notification.notificationLabelBackgroundColor = [UIColor colorWithHexString:@"#c0392b"];
+                                 notification.notificationLabelTextColor = [UIColor whiteColor];
+                                 [notification displayNotificationWithMessage:@"Please check your network connection and try again."
+                                                                  forDuration:3.0f];
+                             }];
+}
 
 #pragma mark - Table view data source
 
@@ -245,7 +264,10 @@
         [totalYieldValue setText:[NSString stringWithFormat:@"%@%%",[_hotTipsHistoryStats totalYield]]];
         UILabel *totalResultValue = (UILabel *)[cell viewWithTag:41];
         [totalResultValue setFont:[UIFont fontWithName:@"Lato-Regular" size:17]];
-        [totalResultValue setText:[_hotTipsHistoryStats totalResult]];
+        if ([_hotTipsHistoryStats totalResult] > 0)
+            [totalResultValue setText:[NSString stringWithFormat:@"+%@", [_hotTipsHistoryStats totalResult]]];
+        else
+            [totalResultValue setText:[_hotTipsHistoryStats totalResult]];
         UILabel *winningRatioValue = (UILabel *)[cell viewWithTag:51];
         [winningRatioValue setFont:[UIFont fontWithName:@"Lato-Regular" size:17]];
         [winningRatioValue setText:[NSString stringWithFormat:@"%@%%",[_hotTipsHistoryStats winningPercentage]]];

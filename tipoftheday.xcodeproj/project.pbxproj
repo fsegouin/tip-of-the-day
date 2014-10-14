@@ -80,7 +80,7 @@
 
 /* Begin PBXFileReference section */
 		0978B2B37F054A358B82188B /* libPods-tipoftheday.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-tipoftheday.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		95E2BBF5CC964629B87A8C19 /* Pods-tipoftheday.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tipoftheday.xcconfig"; path = "Pods/Pods-tipoftheday.xcconfig"; sourceTree = "<group>"; };
+		419A980E7ED6370FC46AD597 /* Pods-tipoftheday.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tipoftheday.release.xcconfig"; path = "Pods/Target Support Files/Pods-tipoftheday/Pods-tipoftheday.release.xcconfig"; sourceTree = "<group>"; };
 		B61DE4EB199B55710027D5B6 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		B61DE4F1199B68C70027D5B6 /* BCTip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BCTip.h; path = Objects/BCTip.h; sourceTree = "<group>"; };
 		B61DE4F2199B68C70027D5B6 /* BCTip.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BCTip.m; path = Objects/BCTip.m; sourceTree = "<group>"; };
@@ -182,6 +182,7 @@
 		B6F3048219A1F31C00FF81B7 /* blue-disclosure-indicator@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blue-disclosure-indicator@2x.png"; sourceTree = "<group>"; };
 		B6FDB03019A73F2A002D874F /* BCHelpButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BCHelpButton.h; path = Objects/BCHelpButton.h; sourceTree = "<group>"; };
 		B6FDB03119A73F2A002D874F /* BCHelpButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BCHelpButton.m; path = Objects/BCHelpButton.m; sourceTree = "<group>"; };
+		F61C947B8E53EA36BA9D73BB /* Pods-tipoftheday.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tipoftheday.debug.xcconfig"; path = "Pods/Target Support Files/Pods-tipoftheday/Pods-tipoftheday.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -215,6 +216,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		94D384F8257B944ED85F7B07 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				F61C947B8E53EA36BA9D73BB /* Pods-tipoftheday.debug.xcconfig */,
+				419A980E7ED6370FC46AD597 /* Pods-tipoftheday.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		B61DE4F0199B68A40027D5B6 /* Objects */ = {
 			isa = PBXGroup;
 			children = (
@@ -339,7 +349,7 @@
 				B6BA7392199B52E500274550 /* tipofthedayTests */,
 				B6BA7369199B52E400274550 /* Frameworks */,
 				B6BA7368199B52E400274550 /* Products */,
-				95E2BBF5CC964629B87A8C19 /* Pods-tipoftheday.xcconfig */,
+				94D384F8257B944ED85F7B07 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -566,7 +576,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Pods-tipoftheday-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-tipoftheday/Pods-tipoftheday-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		219D6683569B4FBDB1D74C08 /* Check Pods Manifest.lock */ = {
@@ -742,7 +752,7 @@
 		};
 		B6BA739D199B52E500274550 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 95E2BBF5CC964629B87A8C19 /* Pods-tipoftheday.xcconfig */;
+			baseConfigurationReference = F61C947B8E53EA36BA9D73BB /* Pods-tipoftheday.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -757,34 +767,9 @@
 					"$(PROJECT_DIR)/tipoftheday/Frameworks/OtherLevels",
 					"$(PROJECT_DIR)/tipoftheday/Frameworks/GoogleAnalytics",
 				);
-				OTHER_LDFLAGS = (
-					"-ObjC",
-					"-lxml2",
-					"-lz",
-					"-framework",
-					CFNetwork,
-					"-framework",
-					CoreData,
-					"-framework",
-					CoreGraphics,
-					"-framework",
-					Foundation,
-					"-framework",
-					ImageIO,
-					"-framework",
-					MobileCoreServices,
-					"-framework",
-					QuartzCore,
-					"-framework",
-					Security,
-					"-framework",
-					SystemConfiguration,
-					"-framework",
-					UIKit,
-					"-all_load",
-				);
+				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "d589ddcf-2bca-4fe6-a9a6-11d9dd00317c";
+				PROVISIONING_PROFILE = "";
 				USER_HEADER_SEARCH_PATHS = "\"${PODS_ROOT}/BuildHeaders\"\n\"${PODS_ROOT}/BuildHeaders\"\n\"${PODS_ROOT}/BuildHeaders\"\n\"${PODS_ROOT}/BuildHeaders\"/**";
 				WRAPPER_EXTENSION = app;
 			};
@@ -792,7 +777,7 @@
 		};
 		B6BA739E199B52E500274550 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 95E2BBF5CC964629B87A8C19 /* Pods-tipoftheday.xcconfig */;
+			baseConfigurationReference = 419A980E7ED6370FC46AD597 /* Pods-tipoftheday.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -807,34 +792,9 @@
 					"$(PROJECT_DIR)/tipoftheday/Frameworks/OtherLevels",
 					"$(PROJECT_DIR)/tipoftheday/Frameworks/GoogleAnalytics",
 				);
-				OTHER_LDFLAGS = (
-					"-ObjC",
-					"-lxml2",
-					"-lz",
-					"-framework",
-					CFNetwork,
-					"-framework",
-					CoreData,
-					"-framework",
-					CoreGraphics,
-					"-framework",
-					Foundation,
-					"-framework",
-					ImageIO,
-					"-framework",
-					MobileCoreServices,
-					"-framework",
-					QuartzCore,
-					"-framework",
-					Security,
-					"-framework",
-					SystemConfiguration,
-					"-framework",
-					UIKit,
-					"-all_load",
-				);
+				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "d589ddcf-2bca-4fe6-a9a6-11d9dd00317c";
+				PROVISIONING_PROFILE = "";
 				USER_HEADER_SEARCH_PATHS = "\"${PODS_ROOT}/BuildHeaders\"\n\"${PODS_ROOT}/BuildHeaders\"\n\"${PODS_ROOT}/BuildHeaders\"\n\"${PODS_ROOT}/BuildHeaders\"/**";
 				WRAPPER_EXTENSION = app;
 			};

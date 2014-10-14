@@ -16,6 +16,7 @@
 #import "HexColor.h"
 #import "MONActivityIndicatorView.h"
 #import "NSDate+Utilities.h"
+#import "CWStatusBarNotification.h"
 
 #ifdef DEBUG
 #define kAPIKeypath @"result"
@@ -65,8 +66,12 @@
     [_indicatorView startAnimating];
     
 //    Debug purposes
-    [[[SDWebImageManager sharedManager] imageCache] clearDisk];
-    [[[SDWebImageManager sharedManager] imageCache] clearMemory];
+//    [[[SDWebImageManager sharedManager] imageCache] clearDisk];
+//    [[[SDWebImageManager sharedManager] imageCache] clearMemory];
+    
+    refreshControl = [[UIRefreshControl alloc]init];
+    [self.tableView addSubview:refreshControl];
+    [refreshControl addTarget:self action:@selector(loadHotTipOfTheDay) forControlEvents:UIControlEventValueChanged];
     
     [self configureRestKit];
     [self loadHotTipOfTheDay];
@@ -171,11 +176,20 @@
                                       _hotTipOfTheDay = [mappingResult firstObject];
                                   if (![_indicatorView isHidden])
                                       [_indicatorView stopAnimating];
-                                  [self.tableView reloadData];
+                                 [refreshControl endRefreshing];
+                                 [self.tableView reloadData];
                             }
                             failure:^(RKObjectRequestOperation *operation, NSError *error) {
                                 NSLog(@"What do you mean by 'there is an error?': %@", error);
 //                                ERROR : CHECK FOR "NO TIP FOUND" VALUE
+                                if (![_indicatorView isHidden])
+                                    [_indicatorView stopAnimating];
+                                [refreshControl endRefreshing];
+                                CWStatusBarNotification *notification = [CWStatusBarNotification new];
+                                notification.notificationLabelBackgroundColor = [UIColor colorWithHexString:@"#c0392b"];
+                                notification.notificationLabelTextColor = [UIColor whiteColor];
+                                [notification displayNotificationWithMessage:@"Please check your network connection and try again."
+                                                                 forDuration:3.0f];
                             }];
 }
 
