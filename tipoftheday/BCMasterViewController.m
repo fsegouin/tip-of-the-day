@@ -152,11 +152,11 @@
                                                                                          withMapping:teamMapping]]];
     
     // register mappings with the provider using a response descriptor
-#warning - Need to change this when the feature-api branch will be pushed live
+//#warning - Need to change this when the feature-api branch will be pushed live
     NSString *keyPath = @"result.tip"; // Prod
-    #ifdef DEBUG
-    keyPath = @"result.tip"; // Dev
-    #endif
+//    #ifdef DEBUG
+//    keyPath = @"result.tip"; // Dev
+//    #endif
     
     RKResponseDescriptor *responseDescriptor =
     [RKResponseDescriptor responseDescriptorWithMapping:tipMapping

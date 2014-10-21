@@ -469,6 +469,7 @@
 				B6BA7364199B52E400274550 /* Frameworks */,
 				B6BA7365199B52E400274550 /* Resources */,
 				0AC3DE30204449D986D2C31D /* Copy Pods Resources */,
+				B62F6A9019F6D4FC00F6A11A /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -507,6 +508,9 @@
 				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = "Better Collective";
 				TargetAttributes = {
+					B6BA7366199B52E400274550 = {
+						DevelopmentTeam = X47Q4F2D2T;
+					};
 					B6BA738A199B52E400274550 = {
 						TestTargetID = B6BA7366199B52E400274550;
 					};
@@ -593,6 +597,19 @@
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
+		};
+		B62F6A9019F6D4FC00F6A11A /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "#Update build number with number of git commits if in release mode\nif [ ${CONFIGURATION} == \"Release\" ]; then\nbuildNumber=$(git rev-list HEAD | wc -l | tr -d ' ')\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\"\nfi;";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -757,6 +774,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "tipoftheday/tipoftheday-Prefix.pch";
 				INFOPLIST_FILE = "tipoftheday/tipoftheday-Info.plist";
@@ -782,6 +800,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "tipoftheday/tipoftheday-Prefix.pch";
 				INFOPLIST_FILE = "tipoftheday/tipoftheday-Info.plist";
