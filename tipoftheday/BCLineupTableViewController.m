@@ -163,7 +163,7 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the number of sections.
-    int howManySections = 6;
+    int howManySections = 7;
 //    if ([[_selectedTeam substitutes] count] > 0)
 //        howManySections++;
     if ([[_selectedTeam injuries] count] > 0)
@@ -176,19 +176,25 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    if (section == 3)
+//    if (section == 2 && [[_selectedTeam lineups] count] == 0)
+//        return 0;
+    if (section == 2 && [[_selectedTeam lineups] count] > 0)
+        return 0;
+    if (section == 3 && [[_selectedTeam lineups] count] == 0)
+        return 0;
+    if (section == 4)
         return [[_selectedTeam lineups] count];
-    if (section == 4 && [[_selectedTeam substitutes] count] == 0)
+    if (section == 5 && [[_selectedTeam substitutes] count] == 0)
         return 0;
-    else if (section == 5)
+    else if (section == 6)
         return [[_selectedTeam substitutes] count];
-    if (section == 6 && [[_selectedTeam injuries] count] == 0)
+    if (section == 7 && [[_selectedTeam injuries] count] == 0)
         return 0;
-    else if (section == 7)
+    else if (section == 8)
         return [[_selectedTeam injuries] count];
-    if (section == 8 && [[_selectedTeam suspensions] count] == 0)
+    if (section == 9 && [[_selectedTeam suspensions] count] == 0)
         return 0;
-    else if (section == 9)
+    else if (section == 10)
         return [[_selectedTeam suspensions] count];
     else
         return 1;
@@ -196,7 +202,7 @@
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == 3 || indexPath.section == 5 || indexPath.section == 7 || indexPath.section == 9) {
+    if (indexPath.section == 4 || indexPath.section == 6 || indexPath.section == 8 || indexPath.section == 10) {
         if(indexPath.row % 2 == 0)
             cell.contentView.backgroundColor = [UIColor colorWithHexString:@"F6F7F7"];
         else
@@ -210,6 +216,7 @@
 
     static NSString *TeamNameHeaderCellIdentifier = @"TeamNameHeaderCell";
     static NSString *SoccerFieldCellIdentifier = @"SoccerFieldCell";
+    static NSString *LineupErrorCellIdentifier = @"LineupErrorCell";
     static NSString *HeaderCellIdentifier = @"HeaderCell";
     static NSString *LineupCellIdentifier = @"LineupCell";
     static NSString *InjuryCellIdentifier = @"InjuryCell";
@@ -225,17 +232,20 @@
             cellIdentifier = SoccerFieldCellIdentifier;
             break;
         case 2:
-        case 4:
-        case 6:
-        case 8:
-            cellIdentifier = HeaderCellIdentifier;
+            cellIdentifier = LineupErrorCellIdentifier;
             break;
         case 3:
         case 5:
-            cellIdentifier = LineupCellIdentifier;
-            break;
         case 7:
         case 9:
+            cellIdentifier = HeaderCellIdentifier;
+            break;
+        case 4:
+        case 6:
+            cellIdentifier = LineupCellIdentifier;
+            break;
+        case 8:
+        case 10:
             cellIdentifier = InjuryCellIdentifier;
             break;
         default:
@@ -265,23 +275,33 @@
         [cell setBackgroundView:soccerFieldView];
     }
     
-    else if (indexPath.section == 2 || indexPath.section == 4 || indexPath.section == 6 || indexPath.section == 8) {
+    else if (indexPath.section == 3 || indexPath.section == 5 || indexPath.section == 7 || indexPath.section == 9) {
         UILabel *headerLabel = (UILabel *)[cell viewWithTag:10];
         [headerLabel setFont:[UIFont fontWithName:@"Lato-Regular" size:16]];
         switch (indexPath.section) {
-            case 2:
-                if ([[_selectedTeam getTeamFormationString] length] != 0)
-                    [headerLabel setText:[NSString stringWithFormat:@"LINEUP (%@)", [_selectedTeam getTeamFormationString]]];
+            case 3:
+                if ([[_selectedTeam getTeamFormationString] length] != 0) {
+                    NSString *lineupLabel = [NSString stringWithFormat:@"LINEUP (%@)", [_selectedTeam getTeamFormationString]];
+//                    [headerLabel setText:[NSString stringWithFormat:@"LINEUP (%@)", [_selectedTeam getTeamFormationString]]];
+                    if ([[self.event lineupConfirmed] boolValue]) {
+                        [lineupLabel stringByAppendingString:@"- Confirmed"];
+                    }
+                    else
+                    {
+                        [lineupLabel stringByAppendingString:@"- Expected"];
+                    }
+                    [headerLabel setText:lineupLabel];
+                }
                 else
                     [headerLabel setText:@"LINEUP"];
                 break;
-            case 4:
+            case 5:
                 [headerLabel setText:@"SUBSTITUTES"];
                 break;
-            case 6:
+            case 7:
                 [headerLabel setText:@"INJURIES"];
                 break;
-            case 8:
+            case 9:
                 [headerLabel setText:@"SUSPENSIONS"];
                 break;
             default:
@@ -289,10 +309,10 @@
         }
     }
     
-    else if (indexPath.section == 3 || indexPath.section == 5) {
+    else if (indexPath.section == 4 || indexPath.section == 6) {
         BCLineup *player = [[BCLineup alloc] init];
         
-        if (indexPath.section == 3)
+        if (indexPath.section == 4)
             player = [[_selectedTeam lineups] objectAtIndex:indexPath.row];
         else
             player = [[_selectedTeam substitutes] objectAtIndex:indexPath.row];
@@ -315,17 +335,17 @@
         [position setText:[player getStringPositionFromPositionNumber]];
     }
     
-    else if (indexPath.section == 7 || indexPath.section == 9) {
+    else if (indexPath.section == 8 || indexPath.section == 10) {
         BCInjury *player = [[BCInjury alloc] init];
 
-        if (indexPath.section == 7)
+        if (indexPath.section == 8)
             player = [[_selectedTeam injuries] objectAtIndex:indexPath.row];
         else
             player = [[_selectedTeam suspensions] objectAtIndex:indexPath.row];
         
         UILabel *symbol = (UILabel *)[cell viewWithTag:10];
         [symbol setFont:[UIFont fontWithName:kFontAwesomeFamilyName size:25]];
-        if (indexPath.section == 7)
+        if (indexPath.section == 8)
             [symbol setText:[NSString fontAwesomeIconStringForEnum:FAMedkit]];
         else
             [symbol setText:[NSString fontAwesomeIconStringForEnum:FAExclamationTriangle]];
@@ -349,10 +369,10 @@
         case 1:
             return 200;
             break;
-        case 3:
-        case 5:
-        case 7:
-        case 9:
+        case 4:
+        case 6:
+        case 8:
+        case 10:
             return 50;
             break;
         default:

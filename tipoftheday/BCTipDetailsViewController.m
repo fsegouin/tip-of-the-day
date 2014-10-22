@@ -7,6 +7,7 @@
 //
 
 #import "BCTipDetailsViewController.h"
+#import "BCEvent.h"
 #import "BCTip.h"
 #import "BCLineup.h"
 #import "BCInjury.h"
@@ -34,6 +35,7 @@
 @interface BCTipDetailsViewController ()
 
 @property (nonatomic, strong) NSArray *teams;
+@property (nonatomic, strong) BCEvent *event;
 @property (nonatomic, strong) NSMutableDictionary *offscreenCells;
 @property (nonatomic, strong) DDHTimerControl *timerControl;
 @property (nonatomic, strong) NSDate *endDate;
@@ -157,6 +159,13 @@
     [[RKObjectManager sharedManager] setAcceptHeaderWithMIMEType:RKMIMETypeTextXML];
     
     // setup object mappings
+    RKObjectMapping *eventMapping = [RKObjectMapping mappingForClass:[BCEvent class]];
+    [eventMapping addAttributeMappingsFromDictionary:@{
+                                                      @"status_type" : @"statusType",
+                                                      @"name" : @"name",
+                                                      @"properties.LineupConfirmed": @"lineupConfirmed"
+                                                      }];
+    
     RKObjectMapping *teamMapping = [RKObjectMapping mappingForClass:[BCTeam class]];
     [teamMapping addAttributeMappingsFromDictionary:@{
                                                       @"number" : @"number",
@@ -189,6 +198,16 @@
                                             statusCodes:[NSIndexSet indexSetWithIndex:200]];
     
     [_objectManager addResponseDescriptor:responseDescriptor];
+
+    // register mappings with the provider using a response descriptor
+    RKResponseDescriptor *eventResponseDescriptor =
+    [RKResponseDescriptor responseDescriptorWithMapping:eventMapping
+                                                 method:RKRequestMethodGET
+                                            pathPattern:nil
+                                                keyPath:@"spocosy.query-response.event"
+                                            statusCodes:[NSIndexSet indexSetWithIndex:200]];
+    
+    [_objectManager addResponseDescriptor:eventResponseDescriptor];
     
 }
 - (void)loadEnetpulseData
@@ -196,12 +215,17 @@
     [_objectManager getObjectsAtPath:[NSString stringWithFormat:@"/xmlservice/xmlservice.php?service=livestats&usr=chrisper&pwd=PieQTRlRyP&includeProperties=1&includeDebug=0&datecmd=none&defaultLang=&languageids=3&eventids=%d&stageids=&resolveParticipants=1&includeAllEventData=1&includeAllLivestatsData=1", [[_hotTipOfTheDay enetpulseEventId] intValue]]
                           parameters:nil
                              success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-                                 _teams = mappingResult.array;
+                                 NSDictionary *results = [mappingResult dictionary];
+//                                 NSLog(@"Results: %@", results);
+                                 self.event = [results objectForKey:@"spocosy.query-response.event"];
+                                 NSLog(@"Event Status: %@", [self.event statusType]);
+                                 self.teams = [results objectForKey:@"spocosy.query-response.event.event_participant"];
+//                                 _teams = mappingResult.array;
                                  // We need to make sure the first team in our array is the team playing at home (will be easier to deal with teams later)
                                  NSSortDescriptor *sortDescriptor;
                                  sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"number" ascending:YES];
                                  NSArray *sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
-                                 _teams = [_teams sortedArrayUsingDescriptors:sortDescriptors];
+                                 self.teams = [self.teams sortedArrayUsingDescriptors:sortDescriptors];
                                  [self.tableView reloadData];
                              }
                              failure:^(RKObjectRequestOperation *operation, NSError *error) {
@@ -318,7 +342,7 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 6;
+    return 7;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -363,6 +387,7 @@
     static NSString *AnalysisCellIdentifier = @"AnalysisCell";
     static NSString *LineupHeaderCellIdentifier = @"LineupHeaderCell";
     static NSString *LineupCellIdentifier = @"LineupCell";
+    static NSString *FooterCellIdentifier = @"FooterCell";
     
     id cell;
     
@@ -372,14 +397,16 @@
         // Configure the cell...
         BCHotTipDetailsView* tipBackgroundView = [[BCHotTipDetailsView alloc] init];
         [tipBackgroundView setBackgroundColor:[UIColor clearColor]];
-        ([[_hotTipOfTheDay getKickOffTime] timeIntervalSinceNow] < 0) ? [tipBackgroundView setIsLive:YES] : [tipBackgroundView setIsLive:NO];
+        ([[self.event statusType] isEqualToString:@"inprogress"]) ? [tipBackgroundView setIsLive:YES] : [tipBackgroundView setIsLive:NO];
         [cell setBackgroundView:tipBackgroundView];
         
         UILabel *liveScore = (UILabel *)[cell viewWithTag:24];
         if ([tipBackgroundView isLive])
             [liveScore setText:@"LIVE"];
-        else
-            [liveScore setText:@""];
+        else if ([[self.event statusType] isEqualToString:@"finished"])
+            [liveScore setText:@"Finished"];
+        else if ([[self.event statusType] isEqualToString:@"notstarted"])
+            [liveScore setText:@""]; // Do not display the liveScore label
         
         UILabel *leagueName = (UILabel *)[cell viewWithTag:22];
         [leagueName setText:[_hotTipOfTheDay leagueName]];
@@ -437,7 +464,7 @@
 //        oddsHelpButton.frame = [self getFrameForHelpButton:oddsHelpButton fromSurroudingLabel:oddsValue withFont:[UIFont fontWithName:@"Lato-Regular" size:16] andOffset:270];
         
         if ([_teams count]) {
-            if (![tipBackgroundView isLive]) {
+            if (![tipBackgroundView isLive] && [[self.event statusType] isEqualToString:@"notstarted"]) {
                 MZTimerLabel *kickoffTimer = (MZTimerLabel *)[cell viewWithTag:24];
                 [kickoffTimer setTimerType:MZTimerLabelTypeTimer];
                 kickoffTimer.timeLabel.font = [UIFont fontWithName:@"Lato-Bold" size:23];
@@ -499,12 +526,25 @@
         else
             [teamLabel setText:[[[_hotTipOfTheDay teams] lastObject] name]];
     }
-    else
+    else if (indexPath.section == 5)
     {
         cell = (UITableViewCell *)[tableView dequeueReusableCellWithIdentifier:MoreTipsCellIdentifier forIndexPath:indexPath];
         UIButton *moreTipsButton = (UIButton *)[cell viewWithTag:10];
         [moreTipsButton.titleLabel setFont:[UIFont fontWithName:@"Montserrat-Regular" size:18]];
         [moreTipsButton setTitle:@"More tips in this league" forState:UIControlStateNormal];
+    }
+    else
+    {
+        cell = (UITableViewCell *)[tableView dequeueReusableCellWithIdentifier:FooterCellIdentifier forIndexPath:indexPath];
+        UILabel *footerLabel = (UILabel *)[cell viewWithTag:10];
+        [footerLabel setFont:[UIFont fontWithName:@"Lato-Light" size:17]];
+        [footerLabel setNumberOfLines:4];
+        [footerLabel setText:@"This tip is provided by bettingexpert. Sign up for free to access more than 75,000 tips\nevery month."];
+        UIButton *goToWebsite = (UIButton *)[cell viewWithTag:20];
+        [goToWebsite setBackgroundColor:[UIColor colorWithHexString:@"3ABF50"]];
+        [goToWebsite setTintColor:[UIColor whiteColor]];
+        [goToWebsite.titleLabel setFont:[UIFont fontWithName:@"Montserrat-Regular" size:18]];
+        [goToWebsite setTitle:@"Sign up" forState:UIControlStateNormal];
     }
     
     return cell;
@@ -553,6 +593,10 @@
             
         case 3:
             return 70;
+            break;
+            
+        case 6:
+            return 185;
             break;
             
         default:
@@ -834,6 +878,7 @@
         NSIndexPath *selectedRowIndex = [self.tableView indexPathForSelectedRow];
         [[_teams objectAtIndex:selectedRowIndex.row] setLogoUrl:[[[_hotTipOfTheDay teams] objectAtIndex:selectedRowIndex.row] logoUrl]];
         [[segue destinationViewController] setSelectedTeam:[_teams objectAtIndex:selectedRowIndex.row]];
+        [[segue destinationViewController] setEvent:self.event];
     }
 }
 

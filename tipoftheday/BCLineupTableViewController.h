@@ -8,9 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import "BCTeam.h"
+#import "BCEvent.h"
 
 @interface BCLineupTableViewController : UITableViewController
 
 @property (nonatomic, strong) BCTeam *selectedTeam;
+@property (nonatomic, strong) BCEvent *event;
 
 @end

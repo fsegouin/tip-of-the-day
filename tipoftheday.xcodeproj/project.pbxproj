@@ -31,6 +31,7 @@
 		B66116DD19AB8D7500D78E8F /* BCBet365Market.m in Sources */ = {isa = PBXBuildFile; fileRef = B66116DC19AB8D7500D78E8F /* BCBet365Market.m */; };
 		B66116E019AB8D8A00D78E8F /* BCBet365Participant.m in Sources */ = {isa = PBXBuildFile; fileRef = B66116DF19AB8D8A00D78E8F /* BCBet365Participant.m */; };
 		B66116E319AB9B6500D78E8F /* BCBet365EventGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = B66116E219AB9B6500D78E8F /* BCBet365EventGroup.m */; };
+		B697AE6819F8371F009C8574 /* BCEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = B697AE6719F8371F009C8574 /* BCEvent.m */; };
 		B6A3775219A230790044E59B /* BCSoccerFieldView.m in Sources */ = {isa = PBXBuildFile; fileRef = B6A3775119A230790044E59B /* BCSoccerFieldView.m */; };
 		B6A3775519A231700044E59B /* BCLineupTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B6A3775419A231700044E59B /* BCLineupTableViewController.m */; };
 		B6A9676719AB50B500CC59D1 /* libOtherLevels.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B6A9675A19AB50B500CC59D1 /* libOtherLevels.a */; };
@@ -120,6 +121,8 @@
 		B66116DF19AB8D8A00D78E8F /* BCBet365Participant.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BCBet365Participant.m; path = Objects/BCBet365Participant.m; sourceTree = "<group>"; };
 		B66116E119AB9B6500D78E8F /* BCBet365EventGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BCBet365EventGroup.h; path = Objects/BCBet365EventGroup.h; sourceTree = "<group>"; };
 		B66116E219AB9B6500D78E8F /* BCBet365EventGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BCBet365EventGroup.m; path = Objects/BCBet365EventGroup.m; sourceTree = "<group>"; };
+		B697AE6619F8371F009C8574 /* BCEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BCEvent.h; path = Objects/BCEvent.h; sourceTree = "<group>"; };
+		B697AE6719F8371F009C8574 /* BCEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BCEvent.m; path = Objects/BCEvent.m; sourceTree = "<group>"; };
 		B6A3775019A230790044E59B /* BCSoccerFieldView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BCSoccerFieldView.h; path = Views/BCSoccerFieldView.h; sourceTree = "<group>"; };
 		B6A3775119A230790044E59B /* BCSoccerFieldView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BCSoccerFieldView.m; path = Views/BCSoccerFieldView.m; sourceTree = "<group>"; };
 		B6A3775319A231700044E59B /* BCLineupTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCLineupTableViewController.h; sourceTree = "<group>"; };
@@ -259,6 +262,8 @@
 				B66116DF19AB8D8A00D78E8F /* BCBet365Participant.m */,
 				B66116E119AB9B6500D78E8F /* BCBet365EventGroup.h */,
 				B66116E219AB9B6500D78E8F /* BCBet365EventGroup.m */,
+				B697AE6619F8371F009C8574 /* BCEvent.h */,
+				B697AE6719F8371F009C8574 /* BCEvent.m */,
 			);
 			name = Objects;
 			sourceTree = "<group>";
@@ -642,6 +647,7 @@
 				B6FDB03219A73F2A002D874F /* BCHelpButton.m in Sources */,
 				B6BA737B199B52E400274550 /* BCAppDelegate.m in Sources */,
 				B660869D19A5CF1A007244FF /* BCSettingsTableViewController.m in Sources */,
+				B697AE6819F8371F009C8574 /* BCEvent.m in Sources */,
 				B6A9677719AB7F7E00CC59D1 /* NSDate+Utilities.m in Sources */,
 				B66116DA19AB8D2500D78E8F /* BCBet365Event.m in Sources */,
 				B6A3775519A231700044E59B /* BCLineupTableViewController.m in Sources */,
