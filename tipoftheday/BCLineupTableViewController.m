@@ -280,20 +280,16 @@
         [headerLabel setFont:[UIFont fontWithName:@"Lato-Regular" size:16]];
         switch (indexPath.section) {
             case 3:
-                if ([[_selectedTeam getTeamFormationString] length] != 0) {
-                    NSString *lineupLabel = [NSString stringWithFormat:@"LINEUP (%@)", [_selectedTeam getTeamFormationString]];
-//                    [headerLabel setText:[NSString stringWithFormat:@"LINEUP (%@)", [_selectedTeam getTeamFormationString]]];
-                    if ([[self.event lineupConfirmed] boolValue]) {
-                        [lineupLabel stringByAppendingString:@"- Confirmed"];
-                    }
+            {
+                    NSString *lineupLabel = @"LINEUP";
+                    if ([[_selectedTeam getTeamFormationString] length] != 0)
+                        lineupLabel = [lineupLabel stringByAppendingString:[NSString stringWithFormat:@" (%@)", [_selectedTeam getTeamFormationString]]];
+                    if ([[self.event lineupConfirmed] boolValue])
+                        lineupLabel = [lineupLabel stringByAppendingString:@" - Confirmed"];
                     else
-                    {
-                        [lineupLabel stringByAppendingString:@"- Expected"];
-                    }
+                        lineupLabel = [lineupLabel stringByAppendingString:@" - Expected"];
                     [headerLabel setText:lineupLabel];
-                }
-                else
-                    [headerLabel setText:@"LINEUP"];
+            }
                 break;
             case 5:
                 [headerLabel setText:@"SUBSTITUTES"];

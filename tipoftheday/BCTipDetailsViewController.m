@@ -63,7 +63,11 @@
 {
     [super viewDidLoad];
     
-    [self.navigationItem setTitle:@"Analysis"];
+//    [self.navigationItem setTitle:@"Analysis"];
+    [self.navigationItem setTitle:@"Football Tip of The Day"];
+    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+    [self.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont fontWithName:@"Lato-Bold" size:17], NSFontAttributeName, [UIColor whiteColor], NSForegroundColorAttributeName, nil]];
+    
     [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     self.tableView.estimatedRowHeight = UITableViewAutomaticDimension;
     [self.tableView setContentInset:UIEdgeInsetsMake(-65, 0, 0, 0)]; // Hide 65 of the top view (need to pull to reveal the timer)
@@ -76,36 +80,10 @@
     
 //    DEBUG
 //    _isEnetpulseAvailable = NO; // Prevent enetpulse data from being downloaded
-    _isEnetpulseAvailable = ([[_hotTipOfTheDay enetpulseEventId] intValue] != 0) ? YES : NO;
+//    _isEnetpulseAvailable = ([[_hotTipOfTheDay enetpulseEventId] intValue] != 0) ? YES : NO;
     
-    //  Timer on top of TableView
-    
-    if (_isEnetpulseAvailable && [[_hotTipOfTheDay getKickOffTime] isToday]) {
-        _timerControl = [DDHTimerControl timerControlWithType:DDHTimerTypeSolid];
-        _timerControl.translatesAutoresizingMaskIntoConstraints = NO;
-        _timerControl.color = [UIColor colorWithHexString:@"444444" alpha:0.2];
-        _timerControl.ringWidth = 3;
-        _timerControl.minutesOrSeconds = 60;
-        _timerControl.userInteractionEnabled = NO;
-        UIView *topView = (UIView *)[self.tableView viewWithTag:10];
-        _timerControl.frame = CGRectMake(0, 0, 66, 66);
-        _timerControl.center = CGPointMake(topView.frame.size.width/2, (topView.frame.size.height-20)/2);
-        [_timerControl addTarget:self action:@selector(valueChanged:) forControlEvents:UIControlEventValueChanged];
-        [topView addSubview:_timerControl];
-            
-        NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(changeTimer:) userInfo:nil repeats:YES];
-        [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
-        
-        _endDate = [NSDate dateWithTimeIntervalSinceNow:12.0f*60.0f];
-    }
-    
-    if (_isEnetpulseAvailable) {
-        [self configureRestKitForEnetpulse];
-        [self loadEnetpulseData];
-    }
-    
-    [self configureRestKitForBet365];
-    [self loadBet365Data];
+    [self configureRestKitForBettingexpert];
+    [self loadHotTipOfTheDay];
     
     // GA Screen Tracking
     
@@ -138,6 +116,30 @@
     _timerControl.minutesOrSeconds = ((NSInteger)timeInterval)%60;
 }
 
+- (void)setupTimer
+{
+    //  Timer on top of TableView
+    
+    if ([[_hotTipOfTheDay getKickOffTime] isToday]) {
+        _timerControl = [DDHTimerControl timerControlWithType:DDHTimerTypeSolid];
+        _timerControl.translatesAutoresizingMaskIntoConstraints = NO;
+        _timerControl.color = [UIColor colorWithHexString:@"444444" alpha:0.2];
+        _timerControl.ringWidth = 3;
+        _timerControl.minutesOrSeconds = 60;
+        _timerControl.userInteractionEnabled = NO;
+        UIView *topView = (UIView *)[self.tableView viewWithTag:10];
+        _timerControl.frame = CGRectMake(0, 0, 66, 66);
+        _timerControl.center = CGPointMake(topView.frame.size.width/2, (topView.frame.size.height-20)/2);
+        [_timerControl addTarget:self action:@selector(valueChanged:) forControlEvents:UIControlEventValueChanged];
+        [topView addSubview:_timerControl];
+        
+        NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(changeTimer:) userInfo:nil repeats:YES];
+        [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
+        
+        _endDate = [NSDate dateWithTimeIntervalSinceNow:12.0f*60.0f];
+    }
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -145,6 +147,109 @@
 }
 
 #pragma mark - RestKit Methods
+
+- (void)configureRestKitForBettingexpert
+{
+    // initialize AFNetworking HTTPClient
+    //    RKLogConfigureByName("RestKit", RKLogLevelWarning);
+    //    RKLogConfigureByName("RestKit/ObjectMapping", RKLogLevelTrace);
+    //    RKLogConfigureByName("RestKit/Network", RKLogLevelTrace);
+    NSURL *baseURL = [NSURL URLWithString:kAPIEndpointHost];
+    AFHTTPClient *client = [[AFHTTPClient alloc] initWithBaseURL:baseURL];
+    
+    // initialize RestKit
+    self.objectManager = [[RKObjectManager alloc] initWithHTTPClient:client];
+    
+    // setup object mappings
+    RKObjectMapping *tipMapping = [RKObjectMapping mappingForClass:[BCTip class]];
+    [tipMapping addAttributeMappingsFromDictionary:@{
+                                                     @"strMatchTitle": @"name",
+                                                     @"intMatchTime": @"matchTime",
+                                                     @"strBetType": @"betType",
+                                                     @"intSelectionType": @"selectionType",
+                                                     @"fltOdds": @"odds",
+                                                     @"fltGoals": @"goals",
+                                                     @"fltHandicap": @"handicap",
+                                                     @"strCountryName": @"countryName",
+                                                     @"strLeagueName": @"leagueName",
+                                                     @"strFullAnalysis": @"fullAnalysis",
+                                                     @"enetpulseStageId": @"enetpulseStageId",
+                                                     @"enetpulseEventId": @"enetpulseEventId"
+                                                     }];
+    
+    
+    RKObjectMapping *tipsterMapping = [RKObjectMapping mappingForClass:[BCTipster class]];
+    [tipsterMapping addAttributeMappingsFromDictionary:@{ @"strUsername": @"username" }];
+    
+    RKObjectMapping *bookmakerMapping = [RKObjectMapping mappingForClass:[BCBookmaker class]];
+    [bookmakerMapping addAttributeMappingsFromDictionary:@{ @"strName": @"name", @"strLink": @"affiliateLink", @"strLogo": @"logoUrl" }];
+    
+    RKObjectMapping *teamMapping = [RKObjectMapping mappingForClass:[BCTeam class]];
+    [teamMapping addAttributeMappingsFromDictionary:@{ @"teamName": @"name", @"teamLogo": @"logoUrl" }];
+    
+    
+    // Define the relationship mapping
+    [tipMapping addPropertyMappingsFromArray:@[[RKRelationshipMapping relationshipMappingFromKeyPath:@"arrTipAuthor"
+                                                                                           toKeyPath:@"tipster"
+                                                                                         withMapping:tipsterMapping],
+                                               [RKRelationshipMapping relationshipMappingFromKeyPath:@"arrAffiliate"
+                                                                                           toKeyPath:@"bookmaker"
+                                                                                         withMapping:bookmakerMapping],
+                                               [RKRelationshipMapping relationshipMappingFromKeyPath:@"teams"
+                                                                                           toKeyPath:@"teams"
+                                                                                         withMapping:teamMapping]]];
+    
+    // register mappings with the provider using a response descriptor
+    //#warning - Need to change this when the feature-api branch will be pushed live
+    NSString *keyPath = @"result.tip"; // Prod
+    //    #ifdef DEBUG
+    //    keyPath = @"result.tip"; // Dev
+    //    #endif
+    
+    RKResponseDescriptor *responseDescriptor =
+    [RKResponseDescriptor responseDescriptorWithMapping:tipMapping
+                                                 method:RKRequestMethodGET
+                                            pathPattern:nil
+                                                keyPath:keyPath
+                                            statusCodes:[NSIndexSet indexSetWithIndex:200]];
+    
+    [_objectManager addResponseDescriptor:responseDescriptor];
+}
+
+- (void)loadHotTipOfTheDay
+{
+    [_objectManager getObjectsAtPath:@"/api/tips/hot/single/1/EN"
+                          parameters:nil
+                             success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+                                 self.hotTipOfTheDay = [mappingResult firstObject];
+//                                 if (![_indicatorView isHidden])
+//                                     [_indicatorView stopAnimating];
+//                                 [refreshControl endRefreshing];
+                                 if ([[self.hotTipOfTheDay getKickOffTime] isToday]) {
+                                     [self configureRestKitForEnetpulse];
+                                     [self loadEnetpulseData];
+                                     
+                                     [self configureRestKitForBet365];
+                                     [self loadBet365Data];
+                                     
+                                     [self setupTimer];
+                                 }
+                                 
+                                 [self.tableView reloadData];
+                             }
+                             failure:^(RKObjectRequestOperation *operation, NSError *error) {
+                                 NSLog(@"What do you mean by 'there is an error?': %@", error);
+                                 //                                ERROR : CHECK FOR "NO TIP FOUND" VALUE
+//                                 if (![_indicatorView isHidden])
+//                                     [_indicatorView stopAnimating];
+//                                 [refreshControl endRefreshing];
+//                                 CWStatusBarNotification *notification = [CWStatusBarNotification new];
+//                                 notification.notificationLabelBackgroundColor = [UIColor colorWithHexString:@"#c0392b"];
+//                                 notification.notificationLabelTextColor = [UIColor whiteColor];
+//                                 [notification displayNotificationWithMessage:@"Please check your network connection and try again."
+//                                                                  forDuration:3.0f];
+                             }];
+}
 
 - (void)configureRestKitForEnetpulse
 {
@@ -342,7 +447,10 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 7;
+    if (self.hotTipOfTheDay != nil)
+        return 7;
+    else
+        return 0;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -463,8 +571,10 @@
 ////        [oddsHelpButton setHidden:NO];
 //        oddsHelpButton.frame = [self getFrameForHelpButton:oddsHelpButton fromSurroudingLabel:oddsValue withFont:[UIFont fontWithName:@"Lato-Regular" size:16] andOffset:270];
         
-        if ([_teams count]) {
-            if (![tipBackgroundView isLive] && [[self.event statusType] isEqualToString:@"notstarted"]) {
+        if ([self.hotTipOfTheDay getKickOffTime] != nil && [self.event statusType] != nil) {
+//            Debug kickofftime
+//            NSLog(@"Kickoff time : %@", [_hotTipOfTheDay getKickOffTime]);
+            if ([[self.hotTipOfTheDay getKickOffTime] isInFuture]) {
                 MZTimerLabel *kickoffTimer = (MZTimerLabel *)[cell viewWithTag:24];
                 [kickoffTimer setTimerType:MZTimerLabelTypeTimer];
                 kickoffTimer.timeLabel.font = [UIFont fontWithName:@"Lato-Bold" size:23];
