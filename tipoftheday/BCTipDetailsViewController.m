@@ -22,6 +22,7 @@
 
 #import <RestKit/RestKit.h>
 #import <SDWebImage/UIImageView+WebCache.h>
+#import "NSString+FontAwesome.h"
 #import "RKXMLReaderSerialization.h"
 #import "MZTimerLabel.h"
 #import "HexColor.h"
@@ -29,6 +30,7 @@
 #import "AMPopTip.h"
 #import "NSDate+Utilities.h"
 #import "HCObjectSwitch.h"
+#import "MONActivityIndicatorView.h"
 
 #import "GAIDictionaryBuilder.h"
 
@@ -43,7 +45,10 @@
 @property (nonatomic, strong) RKObjectManager *objectManagerForBet365;
 @property (nonatomic, strong) AMPopTip *popTip;
 @property (nonatomic, strong) NSArray *bet365EventGroups;
+@property (nonatomic, strong) MONActivityIndicatorView *indicatorView;
 @property BOOL isEnetpulseAvailable;
+@property BOOL isHotTipReleased;
+@property BOOL isOddsFormatFraction;
 
 @end
 
@@ -68,6 +73,14 @@
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     [self.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont fontWithName:@"Lato-Bold" size:17], NSFontAttributeName, [UIColor whiteColor], NSForegroundColorAttributeName, nil]];
     
+    [self.navigationItem.leftBarButtonItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont fontWithName:kFontAwesomeFamilyName size:21], NSFontAttributeName, [UIColor whiteColor], NSForegroundColorAttributeName, nil] forState:UIControlStateNormal];
+    [self.navigationItem.leftBarButtonItem setTitle:[NSString fontAwesomeIconStringForEnum:FACog]];
+    [self.navigationItem.leftBarButtonItem setTitlePositionAdjustment:UIOffsetMake(5, 0) forBarMetrics:UIBarMetricsDefault];
+    
+    [self.navigationItem.rightBarButtonItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont fontWithName:kFontAwesomeFamilyName size:21], NSFontAttributeName, [UIColor whiteColor], NSForegroundColorAttributeName, nil] forState:UIControlStateNormal];
+    [self.navigationItem.rightBarButtonItem setTitle:[NSString fontAwesomeIconStringForEnum:FAlineChart]];
+    [self.navigationItem.rightBarButtonItem setTitlePositionAdjustment:UIOffsetMake(-5, 0) forBarMetrics:UIBarMetricsDefault];
+    
     [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     self.tableView.estimatedRowHeight = UITableViewAutomaticDimension;
     [self.tableView setContentInset:UIEdgeInsetsMake(-65, 0, 0, 0)]; // Hide 65 of the top view (need to pull to reveal the timer)
@@ -78,12 +91,44 @@
     [[AMPopTip appearance] setFont:[UIFont fontWithName:@"Lato-Regular" size:14]];
     _popTip = [AMPopTip popTip];
     
+    _indicatorView = [[MONActivityIndicatorView alloc] init];
+    _indicatorView.center = CGPointMake([UIScreen mainScreen].bounds.size.width/2, [UIScreen mainScreen].bounds.size.height/2-40);
+    [self.view addSubview:_indicatorView];
+    
 //    DEBUG
 //    _isEnetpulseAvailable = NO; // Prevent enetpulse data from being downloaded
 //    _isEnetpulseAvailable = ([[_hotTipOfTheDay enetpulseEventId] intValue] != 0) ? YES : NO;
     
-    [self configureRestKitForBettingexpert];
-    [self loadHotTipOfTheDay];
+    NSDate *now = [NSDate date];
+    if ([now hour] < 13) {
+        self.isHotTipReleased = NO;
+        NSLog(@"New hot tip of the day is not yet released.");
+        UILabel *yourLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 300, 150)];
+        yourLabel.center = CGPointMake([UIScreen mainScreen].bounds.size.width/2,130);
+        [yourLabel setTextColor:[UIColor colorWithHexString:@"7F8C8D"]];
+        [yourLabel setBackgroundColor:[UIColor clearColor]];
+        [yourLabel setFont:[UIFont fontWithName:@"Lato-Light" size:16]];
+        [yourLabel setNumberOfLines:4];
+        [yourLabel setTextAlignment:NSTextAlignmentCenter];
+        [yourLabel setText:@"We carefully handpick our best tip\nfor you everyday. Come back\n in a few hours for another great tip!"];
+        [self.view addSubview:yourLabel];
+        MZTimerLabel *kickoffTimer = [[MZTimerLabel alloc] initWithFrame:CGRectMake(0, 0, 100, 40)];
+        [kickoffTimer setCenter:CGPointMake([UIScreen mainScreen].bounds.size.width/2, 190)];
+        [kickoffTimer setTimerType:MZTimerLabelTypeTimer];
+        kickoffTimer.timeLabel.font = [UIFont fontWithName:@"Lato-Bold" size:23];
+        kickoffTimer.timeLabel.textColor = [UIColor colorWithHexString:@"7F8C8D"];
+        [kickoffTimer setCountDownToDate:[now dateByAddingHours:13-[now hour]]];
+        [self.view addSubview:kickoffTimer];
+        [kickoffTimer start];
+
+    }
+    else {
+        self.isHotTipReleased = YES;
+        [_indicatorView startAnimating];
+        [self configureRestKitForBettingexpert];
+        [self loadHotTipOfTheDay];
+    }
+
     
     // GA Screen Tracking
     
@@ -99,6 +144,22 @@
     // New SDK versions
     [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
     
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    if (self.hotTipOfTheDay != nil) {
+        BOOL currentOddsFormatFraction = [[[NSUserDefaults standardUserDefaults] valueForKey:@"fractionOdds"] boolValue];
+        if (currentOddsFormatFraction != self.isOddsFormatFraction) {
+            [self.tableView reloadData];
+
+        }
+    }
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    self.isOddsFormatFraction = [[[NSUserDefaults standardUserDefaults] valueForKey:@"fractionOdds"] boolValue];
 }
 
 #pragma mark - Timer Methods
@@ -235,6 +296,8 @@
                                      [self setupTimer];
                                  }
                                  
+                                 if (![_indicatorView isHidden])
+                                     [_indicatorView stopAnimating];
                                  [self.tableView reloadData];
                              }
                              failure:^(RKObjectRequestOperation *operation, NSError *error) {
@@ -447,7 +510,7 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    if (self.hotTipOfTheDay != nil)
+    if (self.hotTipOfTheDay != nil && self.isHotTipReleased == YES)
         return 7;
     else
         return 0;
@@ -456,18 +519,18 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    if (_isEnetpulseAvailable) {
+//    if (_isEnetpulseAvailable) {
         if (section == 4)
             return 2;
         else
             return 1;
-    }
-    else {
-        if (section == 3 || section == 4)
-            return 0;
-        else
-            return 1;
-    }
+//    }
+//    else {
+//        if (section == 3 || section == 4)
+//            return 0;
+//        else
+//            return 1;
+//    }
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
@@ -769,6 +832,19 @@
 
 }
 
+- (IBAction)signupToBettingexpert:(id)sender {
+    [OtherLevels registerEvent:@"External link"
+                         label:@"Signup page"];
+    
+    id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+    [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"External link"     // Event category (required)
+                                                          action:@"Button"  // Event action (required)
+                                                           label:@"Signup page"    // Event label
+                                                           value:nil] build]];
+    
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://www.bettingexpert.com/user/register"]]];
+}
+
 - (IBAction)goToBettingexpert:(id)sender {
     [OtherLevels registerEvent:@"External link"
                          label:@"More tips for this league"];
@@ -974,6 +1050,8 @@
 - (BOOL)shouldPerformSegueWithIdentifier:(NSString *)identifier sender:(id)sender
 {
     if ([identifier isEqualToString:@"showLineup"] && [_teams count] > 0)
+        return YES;
+    else if ([identifier isEqualToString:@"showSettings"] || [identifier isEqualToString:@"showTipsHistory"])
         return YES;
     else
         return NO;

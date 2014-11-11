@@ -57,7 +57,7 @@
     [self.navigationItem.leftBarButtonItem setTitlePositionAdjustment:UIOffsetMake(5, 0) forBarMetrics:UIBarMetricsDefault];
     
     [self.navigationItem.rightBarButtonItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont fontWithName:kFontAwesomeFamilyName size:21], NSFontAttributeName, [UIColor whiteColor], NSForegroundColorAttributeName, nil] forState:UIControlStateNormal];
-    [self.navigationItem.rightBarButtonItem setTitle:[NSString fontAwesomeIconStringForEnum:FAhistory]];
+    [self.navigationItem.rightBarButtonItem setTitle:[NSString fontAwesomeIconStringForEnum:FAlineChart]];
     [self.navigationItem.rightBarButtonItem setTitlePositionAdjustment:UIOffsetMake(-5, 0) forBarMetrics:UIBarMetricsDefault];
     
     _indicatorView = [[MONActivityIndicatorView alloc] init];

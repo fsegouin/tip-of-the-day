@@ -23,9 +23,9 @@
 		B64A2262199CA56900F28EAA /* Lato-Bol.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B64A2261199CA56900F28EAA /* Lato-Bol.ttf */; };
 		B64A2264199CA57300F28EAA /* Montserrat-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B64A2263199CA57300F28EAA /* Montserrat-Regular.ttf */; };
 		B64A2267199CA88B00F28EAA /* BCHotTipView.m in Sources */ = {isa = PBXBuildFile; fileRef = B64A2266199CA88B00F28EAA /* BCHotTipView.m */; };
-		B64A226A199CB73200F28EAA /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B64A2269199CB73200F28EAA /* FontAwesome.ttf */; };
 		B64E804D19A759FD00D90A2E /* BCFractionHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = B64E804C19A759FD00D90A2E /* BCFractionHelper.m */; };
 		B64E805019A75C8A00D90A2E /* BCFractionOdds.m in Sources */ = {isa = PBXBuildFile; fileRef = B64E804F19A75C8A00D90A2E /* BCFractionOdds.m */; };
+		B65089EB1A110E5F00234071 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B65089EA1A110E5F00234071 /* FontAwesome.ttf */; };
 		B660869D19A5CF1A007244FF /* BCSettingsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B660869C19A5CF1A007244FF /* BCSettingsTableViewController.m */; };
 		B66116DA19AB8D2500D78E8F /* BCBet365Event.m in Sources */ = {isa = PBXBuildFile; fileRef = B66116D919AB8D2500D78E8F /* BCBet365Event.m */; };
 		B66116DD19AB8D7500D78E8F /* BCBet365Market.m in Sources */ = {isa = PBXBuildFile; fileRef = B66116DC19AB8D7500D78E8F /* BCBet365Market.m */; };
@@ -106,11 +106,11 @@
 		B64A2263199CA57300F28EAA /* Montserrat-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Regular.ttf"; sourceTree = "<group>"; };
 		B64A2265199CA88B00F28EAA /* BCHotTipView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BCHotTipView.h; path = Views/BCHotTipView.h; sourceTree = "<group>"; };
 		B64A2266199CA88B00F28EAA /* BCHotTipView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BCHotTipView.m; path = Views/BCHotTipView.m; sourceTree = "<group>"; };
-		B64A2269199CB73200F28EAA /* FontAwesome.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = FontAwesome.ttf; sourceTree = "<group>"; };
 		B64E804B19A759FD00D90A2E /* BCFractionHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BCFractionHelper.h; path = Objects/BCFractionHelper.h; sourceTree = "<group>"; };
 		B64E804C19A759FD00D90A2E /* BCFractionHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BCFractionHelper.m; path = Objects/BCFractionHelper.m; sourceTree = "<group>"; };
 		B64E804E19A75C8A00D90A2E /* BCFractionOdds.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BCFractionOdds.h; path = Objects/BCFractionOdds.h; sourceTree = "<group>"; };
 		B64E804F19A75C8A00D90A2E /* BCFractionOdds.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BCFractionOdds.m; path = Objects/BCFractionOdds.m; sourceTree = "<group>"; };
+		B65089EA1A110E5F00234071 /* FontAwesome.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = FontAwesome.ttf; sourceTree = "<group>"; };
 		B660869B19A5CF1A007244FF /* BCSettingsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCSettingsTableViewController.h; sourceTree = "<group>"; };
 		B660869C19A5CF1A007244FF /* BCSettingsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BCSettingsTableViewController.m; sourceTree = "<group>"; };
 		B66116D819AB8D2500D78E8F /* BCBet365Event.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BCBet365Event.h; path = Objects/BCBet365Event.h; sourceTree = "<group>"; };
@@ -283,7 +283,7 @@
 		B64A225C199CA4DD00F28EAA /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
-				B64A2269199CB73200F28EAA /* FontAwesome.ttf */,
+				B65089EA1A110E5F00234071 /* FontAwesome.ttf */,
 				B64A2263199CA57300F28EAA /* Montserrat-Regular.ttf */,
 				B63657D9199CE9F200A6A62B /* Lato-Bla.ttf */,
 				B64A2261199CA56900F28EAA /* Lato-Bol.ttf */,
@@ -306,6 +306,15 @@
 				B6E6DED619A391E400893DF9 /* BCHotTipsHistoryStatsView.m */,
 			);
 			name = Views;
+			sourceTree = "<group>";
+		};
+		B68B9B0E1A1246EC00AF023F /* Unsued */ = {
+			isa = PBXGroup;
+			children = (
+				B6BA737F199B52E400274550 /* BCMasterViewController.h */,
+				B6BA7380199B52E400274550 /* BCMasterViewController.m */,
+			);
+			name = Unsued;
 			sourceTree = "<group>";
 		};
 		B6A9675919AB50B500CC59D1 /* OtherLevels */ = {
@@ -390,13 +399,12 @@
 		B6BA7370199B52E400274550 /* tipoftheday */ = {
 			isa = PBXGroup;
 			children = (
+				B68B9B0E1A1246EC00AF023F /* Unsued */,
 				B64A2268199CA89100F28EAA /* Views */,
 				B61DE4F0199B68A40027D5B6 /* Objects */,
 				B6BA737C199B52E400274550 /* Main.storyboard */,
 				B6BA7379199B52E400274550 /* BCAppDelegate.h */,
 				B6BA737A199B52E400274550 /* BCAppDelegate.m */,
-				B6BA737F199B52E400274550 /* BCMasterViewController.h */,
-				B6BA7380199B52E400274550 /* BCMasterViewController.m */,
 				B63657DB199CEDEE00A6A62B /* BCTipDetailsViewController.h */,
 				B63657DC199CEDEE00A6A62B /* BCTipDetailsViewController.m */,
 				B6A3775319A231700044E59B /* BCLineupTableViewController.h */,
@@ -546,13 +554,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				B6F3048319A1F31C00FF81B7 /* blue-disclosure-indicator.png in Resources */,
+				B65089EB1A110E5F00234071 /* FontAwesome.ttf in Resources */,
 				B6BA7386199B52E400274550 /* Images.xcassets in Resources */,
 				B6E6DEDC19A4856200893DF9 /* teamlogo-placeholder.png in Resources */,
 				B6F3048419A1F31C00FF81B7 /* blue-disclosure-indicator@2x.png in Resources */,
 				B64A225F199CA54000F28EAA /* Lato-Lig.ttf in Resources */,
 				B64A2264199CA57300F28EAA /* Montserrat-Regular.ttf in Resources */,
 				B6E6DEDD19A4856200893DF9 /* teamlogo-placeholder@2x.png in Resources */,
-				B64A226A199CB73200F28EAA /* FontAwesome.ttf in Resources */,
 				B63657DA199CE9F200A6A62B /* Lato-Bla.ttf in Resources */,
 				B64A2262199CA56900F28EAA /* Lato-Bol.ttf in Resources */,
 				B6BA7375199B52E400274550 /* InfoPlist.strings in Resources */,
