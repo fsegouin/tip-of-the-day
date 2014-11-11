@@ -293,7 +293,7 @@
                                      [self configureRestKitForBet365];
                                      [self loadBet365Data];
                                      
-                                     [self setupTimer];
+//                                     [self setupTimer];
                                  }
                                  
                                  if (![_indicatorView isHidden])
@@ -394,6 +394,11 @@
                                  sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"number" ascending:YES];
                                  NSArray *sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
                                  self.teams = [self.teams sortedArrayUsingDescriptors:sortDescriptors];
+
+                                 if (![[self.event statusType] isEqualToString:@"finished"]) {
+                                     [self setupTimer];
+                                 }
+                                 
                                  [self.tableView reloadData];
                              }
                              failure:^(RKObjectRequestOperation *operation, NSError *error) {
@@ -571,13 +576,13 @@
         ([[self.event statusType] isEqualToString:@"inprogress"]) ? [tipBackgroundView setIsLive:YES] : [tipBackgroundView setIsLive:NO];
         [cell setBackgroundView:tipBackgroundView];
         
-        UILabel *liveScore = (UILabel *)[cell viewWithTag:24];
-        if ([tipBackgroundView isLive])
-            [liveScore setText:@"LIVE"];
-        else if ([[self.event statusType] isEqualToString:@"finished"])
-            [liveScore setText:@"Finished"];
-        else if ([[self.event statusType] isEqualToString:@"notstarted"])
-            [liveScore setText:@""]; // Do not display the liveScore label
+//        UILabel *liveScore = (UILabel *)[cell viewWithTag:24];
+//        if ([tipBackgroundView isLive])
+//            [liveScore setText:@"LIVE"];
+//        else if ([[self.event statusType] isEqualToString:@"finished"])
+//            [liveScore setText:@"Finished"];
+//        else if ([[self.event statusType] isEqualToString:@"notstarted"])
+//            [liveScore setText:@""]; // Do not display the liveScore label
         
         UILabel *leagueName = (UILabel *)[cell viewWithTag:22];
         [leagueName setText:[_hotTipOfTheDay leagueName]];
@@ -637,7 +642,8 @@
         if ([self.hotTipOfTheDay getKickOffTime] != nil && [self.event statusType] != nil) {
 //            Debug kickofftime
 //            NSLog(@"Kickoff time : %@", [_hotTipOfTheDay getKickOffTime]);
-            if ([[self.hotTipOfTheDay getKickOffTime] isInFuture]) {
+            if ([[self.hotTipOfTheDay getKickOffTime] isInFuture])
+            {
                 MZTimerLabel *kickoffTimer = (MZTimerLabel *)[cell viewWithTag:24];
                 [kickoffTimer setTimerType:MZTimerLabelTypeTimer];
                 kickoffTimer.timeLabel.font = [UIFont fontWithName:@"Lato-Bold" size:23];
@@ -645,11 +651,17 @@
                 [kickoffTimer setCountDownToDate:[_hotTipOfTheDay getKickOffTime]];
                 [kickoffTimer start];
             }
-            else {
-//                UILabel *liveScore = (UILabel *)[cell viewWithTag:24];
+            else
+            {
+                UILabel *liveScore = (UILabel *)[cell viewWithTag:24];
                 liveScore.font = [UIFont fontWithName:@"Lato-Bold" size:23];
                 liveScore.textColor = [UIColor whiteColor];
-                if ([[[[_teams firstObject] liveScores] objectAtIndex:1] valueForKey:@"value"] != nil)
+            
+                if ([[self.event statusType] isEqualToString:@"finished"])
+                    [liveScore setText:@"Finished"];
+                else if ([[self.event statusType] isEqualToString:@"notstarted"])
+                    [liveScore setText:@"LIVE"];
+                else if ([[[[_teams firstObject] liveScores] objectAtIndex:1] valueForKey:@"value"] != nil)
                     [liveScore setText:[self getLiveScore]];
 //                else
 //                    [liveScore setText:@"LIVE"];
