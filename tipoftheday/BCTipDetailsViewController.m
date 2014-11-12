@@ -103,6 +103,8 @@
     if ([now hour] < 13) {
         self.isHotTipReleased = NO;
         NSLog(@"New hot tip of the day is not yet released.");
+        
+//        Header label
         UILabel *yourLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 300, 150)];
         yourLabel.center = CGPointMake([UIScreen mainScreen].bounds.size.width/2,130);
         [yourLabel setTextColor:[UIColor colorWithHexString:@"7F8C8D"]];
@@ -112,6 +114,14 @@
         [yourLabel setTextAlignment:NSTextAlignmentCenter];
         [yourLabel setText:@"We carefully handpick our best tip\nfor you everyday. Come back\n in a few hours for another great tip!"];
         [self.view addSubview:yourLabel];
+        
+//        Footer logo
+        
+        UIImageView *footerLogo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"powered-by-be"]];
+        [footerLogo setCenter:CGPointMake([UIScreen mainScreen].bounds.size.width/2, [UIScreen mainScreen].bounds.size.height-50)];
+        [self.view addSubview:footerLogo];
+        
+//        Kickoff timer
         MZTimerLabel *kickoffTimer = [[MZTimerLabel alloc] initWithFrame:CGRectMake(0, 0, 100, 40)];
         [kickoffTimer setCenter:CGPointMake([UIScreen mainScreen].bounds.size.width/2, 190)];
         [kickoffTimer setTimerType:MZTimerLabelTypeTimer];
@@ -126,7 +136,6 @@
         [kickoffTimer setCountDownToDate:nextTipDate];
         [self.view addSubview:kickoffTimer];
         [kickoffTimer start];
-
     }
     else {
         self.isHotTipReleased = YES;

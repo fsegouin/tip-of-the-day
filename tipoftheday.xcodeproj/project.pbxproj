@@ -18,6 +18,8 @@
 		B61DE505199B6F180027D5B6 /* BCInjury.m in Sources */ = {isa = PBXBuildFile; fileRef = B61DE504199B6F180027D5B6 /* BCInjury.m */; };
 		B63657DA199CE9F200A6A62B /* Lato-Bla.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B63657D9199CE9F200A6A62B /* Lato-Bla.ttf */; };
 		B63657DD199CEDEE00A6A62B /* BCTipDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B63657DC199CEDEE00A6A62B /* BCTipDetailsViewController.m */; };
+		B63C3D811A135BC700D6E261 /* powered-by-be@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B63C3D7F1A135BC700D6E261 /* powered-by-be@2x.png */; };
+		B63C3D851A135BE600D6E261 /* powered-by-be.png in Resources */ = {isa = PBXBuildFile; fileRef = B63C3D841A135BE600D6E261 /* powered-by-be.png */; };
 		B64A225F199CA54000F28EAA /* Lato-Lig.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B64A225D199CA54000F28EAA /* Lato-Lig.ttf */; };
 		B64A2260199CA54000F28EAA /* Lato-Reg.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B64A225E199CA54000F28EAA /* Lato-Reg.ttf */; };
 		B64A2262199CA56900F28EAA /* Lato-Bol.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B64A2261199CA56900F28EAA /* Lato-Bol.ttf */; };
@@ -100,6 +102,8 @@
 		B63657D9199CE9F200A6A62B /* Lato-Bla.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Bla.ttf"; sourceTree = "<group>"; };
 		B63657DB199CEDEE00A6A62B /* BCTipDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCTipDetailsViewController.h; sourceTree = "<group>"; };
 		B63657DC199CEDEE00A6A62B /* BCTipDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BCTipDetailsViewController.m; sourceTree = "<group>"; };
+		B63C3D7F1A135BC700D6E261 /* powered-by-be@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "powered-by-be@2x.png"; sourceTree = "<group>"; };
+		B63C3D841A135BE600D6E261 /* powered-by-be.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "powered-by-be.png"; sourceTree = "<group>"; };
 		B64A225D199CA54000F28EAA /* Lato-Lig.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Lig.ttf"; sourceTree = "<group>"; };
 		B64A225E199CA54000F28EAA /* Lato-Reg.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Reg.ttf"; sourceTree = "<group>"; };
 		B64A2261199CA56900F28EAA /* Lato-Bol.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Bol.ttf"; sourceTree = "<group>"; };
@@ -271,6 +275,8 @@
 		B6331571199CC2530034D861 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				B63C3D841A135BE600D6E261 /* powered-by-be.png */,
+				B63C3D7F1A135BC700D6E261 /* powered-by-be@2x.png */,
 				B6E6DEDA19A4856200893DF9 /* teamlogo-placeholder.png */,
 				B6E6DEDB19A4856200893DF9 /* teamlogo-placeholder@2x.png */,
 				B6E6DED819A3926700893DF9 /* history-stats.png */,
@@ -556,8 +562,10 @@
 				B6F3048319A1F31C00FF81B7 /* blue-disclosure-indicator.png in Resources */,
 				B65089EB1A110E5F00234071 /* FontAwesome.ttf in Resources */,
 				B6BA7386199B52E400274550 /* Images.xcassets in Resources */,
+				B63C3D811A135BC700D6E261 /* powered-by-be@2x.png in Resources */,
 				B6E6DEDC19A4856200893DF9 /* teamlogo-placeholder.png in Resources */,
 				B6F3048419A1F31C00FF81B7 /* blue-disclosure-indicator@2x.png in Resources */,
+				B63C3D851A135BE600D6E261 /* powered-by-be.png in Resources */,
 				B64A225F199CA54000F28EAA /* Lato-Lig.ttf in Resources */,
 				B64A2264199CA57300F28EAA /* Montserrat-Regular.ttf in Resources */,
 				B6E6DEDD19A4856200893DF9 /* teamlogo-placeholder@2x.png in Resources */,
