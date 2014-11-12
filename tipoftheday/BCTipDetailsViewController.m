@@ -117,7 +117,13 @@
         [kickoffTimer setTimerType:MZTimerLabelTypeTimer];
         kickoffTimer.timeLabel.font = [UIFont fontWithName:@"Lato-Bold" size:23];
         kickoffTimer.timeLabel.textColor = [UIColor colorWithHexString:@"7F8C8D"];
-        [kickoffTimer setCountDownToDate:[now dateByAddingHours:13-[now hour]]];
+        NSDate *newDate = [NSDate date];
+        NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier: NSGregorianCalendar];
+        NSDateComponents *components = [gregorian components:NSUIntegerMax fromDate:newDate];
+        [components setHour: 13];
+        [components setMinute: 00];
+        NSDate *nextTipDate = [gregorian dateFromComponents:components];
+        [kickoffTimer setCountDownToDate:nextTipDate];
         [self.view addSubview:kickoffTimer];
         [kickoffTimer start];
 
