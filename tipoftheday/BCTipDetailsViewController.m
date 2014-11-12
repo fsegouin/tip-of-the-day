@@ -109,7 +109,7 @@
         yourLabel.center = CGPointMake([UIScreen mainScreen].bounds.size.width/2,130);
         [yourLabel setTextColor:[UIColor colorWithHexString:@"7F8C8D"]];
         [yourLabel setBackgroundColor:[UIColor clearColor]];
-        [yourLabel setFont:[UIFont fontWithName:@"Lato-Light" size:16]];
+        [yourLabel setFont:[UIFont fontWithName:@"Lato-Light" size:18]];
         [yourLabel setNumberOfLines:4];
         [yourLabel setTextAlignment:NSTextAlignmentCenter];
         [yourLabel setText:@"We carefully handpick our best tip\nfor you everyday. Come back\n in a few hours for another great tip!"];
@@ -123,7 +123,7 @@
         
 //        Kickoff timer
         MZTimerLabel *kickoffTimer = [[MZTimerLabel alloc] initWithFrame:CGRectMake(0, 0, 100, 40)];
-        [kickoffTimer setCenter:CGPointMake([UIScreen mainScreen].bounds.size.width/2, 190)];
+        [kickoffTimer setCenter:CGPointMake([UIScreen mainScreen].bounds.size.width/2, 200)];
         [kickoffTimer setTimerType:MZTimerLabelTypeTimer];
         kickoffTimer.timeLabel.font = [UIFont fontWithName:@"Lato-Bold" size:23];
         kickoffTimer.timeLabel.textColor = [UIColor colorWithHexString:@"7F8C8D"];
