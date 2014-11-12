@@ -142,6 +142,7 @@
         [_indicatorView startAnimating];
         [self configureRestKitForBettingexpert];
         [self loadHotTipOfTheDay];
+        [self setupTimer];
     }
 
     
@@ -181,7 +182,7 @@
 
 - (void)valueChanged:(DDHTimerControl*)sender {
 //    NSLog(@"value: %d", sender.minutesOrSeconds);
-    if (sender.minutesOrSeconds == 0) {
+    if (sender.minutesOrSeconds == 0 && ![[self.event statusType] isEqualToString:@"finished"]) {
         [self loadEnetpulseData];
     }
 }
@@ -196,7 +197,7 @@
 {
     //  Timer on top of TableView
     
-    if ([[_hotTipOfTheDay getKickOffTime] isToday]) {
+//    if ([[_hotTipOfTheDay getKickOffTime] isToday]) {
         _timerControl = [DDHTimerControl timerControlWithType:DDHTimerTypeSolid];
         _timerControl.translatesAutoresizingMaskIntoConstraints = NO;
         _timerControl.color = [UIColor colorWithHexString:@"444444" alpha:0.2];
@@ -213,7 +214,7 @@
         [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
         
         _endDate = [NSDate dateWithTimeIntervalSinceNow:12.0f*60.0f];
-    }
+//    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -410,9 +411,9 @@
                                  NSArray *sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
                                  self.teams = [self.teams sortedArrayUsingDescriptors:sortDescriptors];
 
-                                 if (![[self.event statusType] isEqualToString:@"finished"]) {
-                                     [self setupTimer];
-                                 }
+//                                 if (![[self.event statusType] isEqualToString:@"finished"]) {
+//                                     [self setupTimer];
+//                                 }
                                  
                                  [self.tableView reloadData];
                              }
@@ -671,10 +672,10 @@
                 UILabel *liveScore = (UILabel *)[cell viewWithTag:24];
                 liveScore.font = [UIFont fontWithName:@"Lato-Bold" size:23];
                 liveScore.textColor = [UIColor whiteColor];
-            
-                if ([[self.event statusType] isEqualToString:@"finished"])
-                    [liveScore setText:@"Finished"];
-                else if ([[self.event statusType] isEqualToString:@"notstarted"])
+//            
+//                if ([[self.event statusType] isEqualToString:@"finished"])
+//                    [liveScore setText:@"Finished"];
+                if ([[self.event statusType] isEqualToString:@"notstarted"])
                     [liveScore setText:@"LIVE"];
                 else if ([[[[_teams firstObject] liveScores] objectAtIndex:1] valueForKey:@"value"] != nil)
                     [liveScore setText:[self getLiveScore]];
