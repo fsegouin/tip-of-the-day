@@ -49,22 +49,25 @@
 - (void)setLineups:(NSArray *)lineups {
     _lineups = lineups;
     //do something else
-    _substitutes = [NSMutableArray array];
+    self.substitutes = [NSMutableArray array];
     [self separateSubstitutes];
 }
 
 - (void)separateSubstitutes {
-    NSMutableArray *lineupsCopy = [NSMutableArray arrayWithArray:_lineups];
+    NSMutableArray *lineupsCopy = [[NSMutableArray alloc] init];
+    lineupsCopy = [NSMutableArray arrayWithArray:_lineups];
     for (BCLineup *player in _lineups) {
         if ([player.position intValue] == 0 && [player.shirtNumber intValue] != 0) {
             // This player is a substitute
-            [_substitutes addObject:player];
+            [self.substitutes addObject:player];
             [lineupsCopy removeObject:player];
         }
     }
     // Move the coach to the end of the array (better for tableView later)
-    [lineupsCopy insertObject:[lineupsCopy objectAtIndex:0] atIndex:[lineupsCopy count]];
-    [lineupsCopy removeObjectAtIndex:0];
+    if ([lineupsCopy count] != 0) {
+        [lineupsCopy insertObject:[lineupsCopy objectAtIndex:0] atIndex:[lineupsCopy count]];
+        [lineupsCopy removeObjectAtIndex:0];
+    }
     _lineups = [NSArray arrayWithArray:lineupsCopy];
 }
 

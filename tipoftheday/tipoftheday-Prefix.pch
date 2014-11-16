@@ -10,11 +10,11 @@
 #import "GAIFields.h"
 #import "GAIDictionaryBuilder.h"
 
-#ifdef DEBUG
-#define kAPIEndpointHost @"http://feature-api.bettingexpert.com"
-#else
+//#ifdef DEBUG
+//#define kAPIEndpointHost @"http://feature-api.bettingexpert.com"
+//#else
 #define kAPIEndpointHost @"http://www.bettingexpert.com"
-#endif
+//#endif
 
 #ifndef __IPHONE_5_0
 #warning "This project uses features only available in iOS SDK 5.0 and later."
