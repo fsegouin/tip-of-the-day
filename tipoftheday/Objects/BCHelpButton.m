@@ -7,7 +7,7 @@
 //
 
 #import "BCHelpButton.h"
-#import "HexColor.h"
+#import "UIColor+Hex.h"
 
 @implementation BCHelpButton
 
@@ -25,7 +25,7 @@
 - (void)drawRect:(CGRect)rect
 {
     //// Color Declarations
-    UIColor* bEBlue = [UIColor colorWithHexString:@"006bb3"];
+    UIColor* bEBlue = [UIColor colorWithHex:0x006bb3];
     
     // Drawing code
     CGRect ovalRect = CGRectMake(0, 0, 22, 22);

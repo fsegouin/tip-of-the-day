@@ -25,7 +25,7 @@
 #import "NSString+FontAwesome.h"
 #import "RKXMLReaderSerialization.h"
 #import "MZTimerLabel.h"
-#import "HexColor.h"
+#import "UIColor+Hex.h"
 #import "DDHTimerControl.h"
 #import "AMPopTip.h"
 #import "NSDate+Utilities.h"
@@ -84,8 +84,8 @@
     [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     self.tableView.estimatedRowHeight = UITableViewAutomaticDimension;
     [self.tableView setContentInset:UIEdgeInsetsMake(-65, 0, 0, 0)]; // Hide 65 of the top view (need to pull to reveal the timer)
-    [self.tableView setBackgroundColor:[UIColor colorWithHexString:@"F6F7F7"]];
-    [self.view setBackgroundColor:[UIColor colorWithHexString:@"F6F7F7"]];
+    [self.tableView setBackgroundColor:[UIColor colorWithHex:0xF6F7F7]];
+    [self.view setBackgroundColor:[UIColor colorWithHex:0xF6F7F7]];
     [self.tableView registerClass:[BCHotTipAnalysisViewTableViewCell class] forCellReuseIdentifier:@"AnalysisCell"];
     
     [[AMPopTip appearance] setFont:[UIFont fontWithName:@"Lato-Regular" size:14]];
@@ -107,7 +107,7 @@
 //        Header label
         UILabel *yourLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 300, 150)];
         yourLabel.center = CGPointMake([UIScreen mainScreen].bounds.size.width/2,130);
-        [yourLabel setTextColor:[UIColor colorWithHexString:@"7F8C8D"]];
+        [yourLabel setTextColor:[UIColor colorWithHex:0x7F8C8D]];
         [yourLabel setBackgroundColor:[UIColor clearColor]];
         [yourLabel setFont:[UIFont fontWithName:@"Lato-Light" size:18]];
         [yourLabel setNumberOfLines:4];
@@ -126,7 +126,7 @@
         [kickoffTimer setCenter:CGPointMake([UIScreen mainScreen].bounds.size.width/2, 200)];
         [kickoffTimer setTimerType:MZTimerLabelTypeTimer];
         kickoffTimer.timeLabel.font = [UIFont fontWithName:@"Lato-Bold" size:23];
-        kickoffTimer.timeLabel.textColor = [UIColor colorWithHexString:@"7F8C8D"];
+        kickoffTimer.timeLabel.textColor = [UIColor colorWithHex:0x7F8C8D];
         NSDate *newDate = [NSDate date];
         NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier: NSGregorianCalendar];
         NSDateComponents *components = [gregorian components:NSUIntegerMax fromDate:newDate];
@@ -200,7 +200,7 @@
 //    if ([[_hotTipOfTheDay getKickOffTime] isToday]) {
         _timerControl = [DDHTimerControl timerControlWithType:DDHTimerTypeSolid];
         _timerControl.translatesAutoresizingMaskIntoConstraints = NO;
-        _timerControl.color = [UIColor colorWithHexString:@"444444" alpha:0.2];
+        _timerControl.color = [UIColor colorWithHex:0x444444 alpha:0.2];
         _timerControl.ringWidth = 3;
         _timerControl.minutesOrSeconds = 60;
         _timerControl.userInteractionEnabled = NO;
@@ -556,7 +556,7 @@
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    cell.backgroundColor = [UIColor colorWithHexString:@"#F6F7F7"];
+    cell.backgroundColor = [UIColor colorWithHex:0xF6F7F7];
 //
 //    if (indexPath.section == 0) {
 //        BCHelpButton *selectionHelpButton = (BCHelpButton *)[cell viewWithTag:36];
@@ -704,9 +704,9 @@
         ((BCHotTipAnalysisViewTableViewCell *)cell).titleLabel.text = @"FULL ANALYSIS";
         ((BCHotTipAnalysisViewTableViewCell *)cell).bodyLabel.text = [[[NSAttributedString alloc] initWithData:[[_hotTipOfTheDay fullAnalysis] dataUsingEncoding:NSUTF8StringEncoding] options:@{NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType, NSCharacterEncodingDocumentAttribute: [NSNumber numberWithInt:NSUTF8StringEncoding]} documentAttributes:nil error:nil] string];
         UIView *upperBorder = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 1)];
-        upperBorder.backgroundColor = [UIColor colorWithHexString:@"DFDFDF"];
+        upperBorder.backgroundColor = [UIColor colorWithHex:0xDFDFDF];
         UIView *lowerBorder = [[UIView alloc] initWithFrame:CGRectMake(0, ((BCHotTipAnalysisViewTableViewCell *) cell).bounds.size.height-1, 320, 1)];
-        lowerBorder.backgroundColor = [UIColor colorWithHexString:@"DFDFDF"];
+        lowerBorder.backgroundColor = [UIColor colorWithHex:0xDFDFDF];
         [((BCHotTipAnalysisViewTableViewCell *)cell).contentView addSubview:upperBorder];
         [((BCHotTipAnalysisViewTableViewCell *)cell).contentView addSubview:lowerBorder];
     }
@@ -742,7 +742,7 @@
         [footerLabel setNumberOfLines:4];
         [footerLabel setText:@"This tip is provided by bettingexpert. Sign up for free to access more than 75,000 tips\nevery month."];
         UIButton *goToWebsite = (UIButton *)[cell viewWithTag:20];
-        [goToWebsite setBackgroundColor:[UIColor colorWithHexString:@"3ABF50"]];
+        [goToWebsite setBackgroundColor:[UIColor colorWithHex:0x3ABF50]];
         [goToWebsite setTintColor:[UIColor whiteColor]];
         [goToWebsite.titleLabel setFont:[UIFont fontWithName:@"Montserrat-Regular" size:18]];
         [goToWebsite setTitle:@"Sign up" forState:UIControlStateNormal];
@@ -901,7 +901,7 @@
     buttonFrame.origin.y = buttonFrame.origin.y+95;
     NSString *buttonText = [NSString string];
     
-    self.popTip.popoverColor = [UIColor colorWithHexString:@"006bb3"];
+    self.popTip.popoverColor = [UIColor colorWithHex:0x006bb3];
     
 //    
 //    TEMP - SHOULD MAYBE WRITE THIS IN A DATABASE

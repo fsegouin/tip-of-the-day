@@ -11,7 +11,7 @@
 #import "BCHotTipsHistory.h"
 
 #import <RestKit/RestKit.h>
-#import "HexColor.h"
+#import "UIColor+Hex.h"
 #import "NSString+FontAwesome.h"
 #import "MONActivityIndicatorView.h"
 #import "CWStatusBarNotification.h"
@@ -44,7 +44,7 @@
     [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     self.tableView.estimatedRowHeight = UITableViewAutomaticDimension;
     [self.tableView setContentInset:UIEdgeInsetsMake(30, 0, 0, 0)]; // 30px from top
-    [self.tableView setBackgroundColor:[UIColor colorWithHexString:@"F6F7F7"]];
+    [self.tableView setBackgroundColor:[UIColor colorWithHex:0xF6F7F7]];
     _indicatorView = [[MONActivityIndicatorView alloc] init];
     _indicatorView.center = CGPointMake([UIScreen mainScreen].bounds.size.width/2, [UIScreen mainScreen].bounds.size.height/2-40);
     [self.view addSubview:_indicatorView];
@@ -180,7 +180,7 @@
                                      [_indicatorView stopAnimating];
                                  [refreshControl endRefreshing];
                                  CWStatusBarNotification *notification = [CWStatusBarNotification new];
-                                 notification.notificationLabelBackgroundColor = [UIColor colorWithHexString:@"#c0392b"];
+                                 notification.notificationLabelBackgroundColor = [UIColor colorWithHex:0xc0392b];
                                  notification.notificationLabelTextColor = [UIColor whiteColor];
                                  [notification displayNotificationWithMessage:@"Please check your network connection and try again."
                                                                   forDuration:3.0f];
@@ -211,7 +211,7 @@
 {
     if (indexPath.section == 2) {
         if(indexPath.row % 2 == 0)
-            cell.contentView.backgroundColor = [UIColor colorWithHexString:@"F6F7F7"];
+            cell.contentView.backgroundColor = [UIColor colorWithHex:0xF6F7F7];
         else
             cell.contentView.backgroundColor = [UIColor whiteColor];
     }
@@ -284,7 +284,7 @@
 //        resultSymbol = [[_hotTipsHistoryArray objectAtIndex:indexPath.row] resultSymbol];
         [resultSymbol setFont:[UIFont fontWithName:kFontAwesomeFamilyName size:25]];
         [resultSymbol setText:[[_hotTipsHistoryArray objectAtIndex:indexPath.row] resultSymbol]];
-        [resultSymbol setTextColor:[UIColor colorWithHexString:[[_hotTipsHistoryArray objectAtIndex:indexPath.row] symbolHexColor]]];
+//        [resultSymbol setTextColor:[UIColor colorWithHexString:[[_hotTipsHistoryArray objectAtIndex:indexPath.row] symbolHexColor]]];
         
 //        if(indexPath.row % 2 == 0) {
 //            [resultSymbol setTextColor:[UIColor colorWithHexString:@"1ABC9C"]];

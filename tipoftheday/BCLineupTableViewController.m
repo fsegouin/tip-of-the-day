@@ -14,7 +14,7 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 #import <RestKit/RestKit.h>
 #import "RKXMLReaderSerialization.h"
-#import "HexColor.h"
+#import "UIColor+Hex.h"
 #import "NSString+FontAwesome.h"
 
 @interface BCLineupTableViewController ()
@@ -48,8 +48,8 @@
     [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     self.tableView.estimatedRowHeight = UITableViewAutomaticDimension;
     [self.tableView setContentInset:UIEdgeInsetsMake(30, 0, 0, 0)]; // 30px from top
-    [self.tableView setBackgroundColor:[UIColor colorWithHexString:@"F6F7F7"]];
-    [self.view setBackgroundColor:[UIColor colorWithHexString:@"F6F7F7"]];
+    [self.tableView setBackgroundColor:[UIColor colorWithHex:0xF6F7F7]];
+    [self.view setBackgroundColor:[UIColor colorWithHex:0xF6F7F7]];
     
     [self configureRestKit];
     [self loadDataFromXmlSportsFeed];
@@ -204,7 +204,7 @@
 {
     if (indexPath.section == 4 || indexPath.section == 6 || indexPath.section == 8 || indexPath.section == 10) {
         if(indexPath.row % 2 == 0)
-            cell.contentView.backgroundColor = [UIColor colorWithHexString:@"F6F7F7"];
+            cell.contentView.backgroundColor = [UIColor colorWithHex:0xF6F7F7];
         else
             cell.contentView.backgroundColor = [UIColor whiteColor];
     }
@@ -271,7 +271,7 @@
 //        UITableViewCell *cell  = [tableView dequeueReusableCellWithIdentifier:SoccerFieldCellIdentifier forIndexPath:indexPath];
         BCSoccerFieldView *soccerFieldView = [[BCSoccerFieldView alloc] init];
         [soccerFieldView setPlayers:[_selectedTeam lineups]];
-        [soccerFieldView setBackgroundColor:[UIColor colorWithHexString:@"F6F7F7"]];
+        [soccerFieldView setBackgroundColor:[UIColor colorWithHex:0xF6F7F7]];
         [cell setBackgroundView:soccerFieldView];
     }
     
@@ -344,7 +344,7 @@
         if (indexPath.section == 8)
             [symbol setText:[NSString fontAwesomeIconStringForEnum:FAMedkit]];
         else
-            [symbol setText:[NSString fontAwesomeIconStringForEnum:FAExclamationTriangle]];
+            [symbol setText:[NSString fontAwesomeIconStringForEnum:FAExclamationCircle]];
         
         UILabel *playerName = (UILabel *)[cell viewWithTag:11];
         [playerName setFont:[UIFont fontWithName:@"Lato-Regular" size:16]];

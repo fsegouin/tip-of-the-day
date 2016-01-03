@@ -12,7 +12,7 @@
 #import "HCObjectSwitch.h"
 #import "NSString+FontAwesome.h"
 #import "NSString+HTML.h"
-#import "HexColor.h"
+#import "UIColor+Hex.h"
 
 @implementation BCTip
 

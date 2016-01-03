@@ -9,7 +9,7 @@
 #import "BCAppDelegate.h"
 #import "Reachability.h"
 #import "CWStatusBarNotification.h"
-#import "HexColor.h"
+#import "UIColor+Hex.h"
 
 @implementation BCAppDelegate
 
@@ -76,7 +76,7 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             NSLog(@"UNREACHABLE!");
             CWStatusBarNotification *notification = [CWStatusBarNotification new];
-            notification.notificationLabelBackgroundColor = [UIColor colorWithHexString:@"#c0392b"];
+            notification.notificationLabelBackgroundColor = [UIColor colorWithHex:0xc0392b];
             notification.notificationLabelTextColor = [UIColor whiteColor];
             [notification displayNotificationWithMessage:@"Please check your network connection and try again."
                                              forDuration:3.0f];

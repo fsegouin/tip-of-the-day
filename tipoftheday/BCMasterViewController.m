@@ -13,7 +13,7 @@
 #import <RestKit/RestKit.h>
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "NSString+FontAwesome.h"
-#import "HexColor.h"
+#import "UIColor+Hex.h"
 #import "MONActivityIndicatorView.h"
 #import "NSDate+Utilities.h"
 #import "CWStatusBarNotification.h"
@@ -47,7 +47,7 @@
     
     [self.navigationItem setTitle:@"TIP OF THE DAY"];
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
-    [self.tableView setBackgroundColor:[UIColor colorWithHexString:@"#F6F7F7"]];
+    [self.tableView setBackgroundColor:[UIColor colorWithHex:0xF6F7F7]];
     [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     
     [self.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont fontWithName:@"Lato-Bold" size:17], NSFontAttributeName, [UIColor whiteColor], NSForegroundColorAttributeName, nil]];
@@ -186,7 +186,7 @@
                                     [_indicatorView stopAnimating];
                                 [refreshControl endRefreshing];
                                 CWStatusBarNotification *notification = [CWStatusBarNotification new];
-                                notification.notificationLabelBackgroundColor = [UIColor colorWithHexString:@"#c0392b"];
+                                notification.notificationLabelBackgroundColor = [UIColor colorWithHex:0xc0392b];
                                 notification.notificationLabelTextColor = [UIColor whiteColor];
                                 [notification displayNotificationWithMessage:@"Please check your network connection and try again."
                                                                  forDuration:3.0f];
@@ -211,8 +211,8 @@
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
-    cell.backgroundColor = [UIColor colorWithHexString:@"#F6F7F7"];
-    cell.backgroundView.backgroundColor = [UIColor colorWithHexString:@"#F6F7F7"];
+    cell.backgroundColor = [UIColor colorWithHex:0xF6F7F7];
+    cell.backgroundView.backgroundColor = [UIColor colorWithHex:0xF6F7F7];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -291,7 +291,7 @@
         [buttonText addAttributes:[NSDictionary dictionaryWithObject:[UIFont fontWithName:@"Montserrat-Regular" size:16] forKey:NSFontAttributeName] range:NSMakeRange(2, [buttonText length]-2)];
         
         UIButton *goToWatchLiveGamesAtBet365 = (UIButton *)[cell viewWithTag:40];
-        [goToWatchLiveGamesAtBet365 setBackgroundColor:[UIColor colorWithHexString:@"3ABF50"]];
+        [goToWatchLiveGamesAtBet365 setBackgroundColor:[UIColor colorWithHex:0x3ABF50]];
         [goToWatchLiveGamesAtBet365 setTintColor:[UIColor whiteColor]];
 //        [goToWatchLiveGamesAtBet365.titleLabel setFont:[UIFont fontWithName:@"Montserrat-Regular" size:16]];
         [goToWatchLiveGamesAtBet365 setAttributedTitle:buttonText forState:UIControlStateNormal];

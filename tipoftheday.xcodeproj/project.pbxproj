@@ -489,6 +489,7 @@
 				B6BA7365199B52E400274550 /* Resources */,
 				0AC3DE30204449D986D2C31D /* Copy Pods Resources */,
 				B62F6A9019F6D4FC00F6A11A /* ShellScript */,
+				EE9432969098D8C9CF349190 /* Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -631,6 +632,21 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "#Update build number with number of git commits if in release mode\nif [ ${CONFIGURATION} == \"Release\" ]; then\nbuildNumber=$(git rev-list HEAD | wc -l | tr -d ' ')\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\"\nfi;";
+		};
+		EE9432969098D8C9CF349190 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-tipoftheday/Pods-tipoftheday-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 

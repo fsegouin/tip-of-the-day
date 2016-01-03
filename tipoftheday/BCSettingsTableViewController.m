@@ -8,7 +8,7 @@
 
 #import "BCSettingsTableViewController.h"
 
-#import "HexColor.h"
+#import "UIColor+Hex.h"
 
 @interface BCSettingsTableViewController ()
 

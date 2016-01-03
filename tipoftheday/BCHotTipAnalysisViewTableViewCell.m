@@ -8,7 +8,7 @@
 
 #import "BCHotTipAnalysisViewTableViewCell.h"
 #import "PureLayout.h"
-#import "HexColor.h"
+#import "UIColor+Hex.h"
 
 #define kLabelHorizontalInsets      17.0f
 #define kLabelVerticalInsets        10.0f
@@ -33,14 +33,14 @@
         [self.titleLabel setNumberOfLines:1];
         [self.titleLabel setTextAlignment:NSTextAlignmentLeft];
         [self.titleLabel setFont:[UIFont fontWithName:@"Lato-Bold" size:16]];
-        [self.titleLabel setTextColor:[UIColor colorWithHexString:@"28A5FF"]];
+        [self.titleLabel setTextColor:[UIColor colorWithHex:0x28A5FF]];
         
         self.bodyLabel = [UILabel newAutoLayoutView];
         [self.bodyLabel setLineBreakMode:NSLineBreakByTruncatingTail];
         [self.bodyLabel setNumberOfLines:0];
         [self.bodyLabel setTextAlignment:NSTextAlignmentLeft];
         [self.bodyLabel setFont:[UIFont fontWithName:@"Lato-Regular" size:16]];
-        [self.bodyLabel setTextColor:[UIColor colorWithHexString:@"444444"]];
+        [self.bodyLabel setTextColor:[UIColor colorWithHex:0x444444]];
 
         self.contentView.backgroundColor = [UIColor whiteColor];
         
@@ -66,10 +66,10 @@
     // As a fix, you can temporarily increase the size of the cell's contentView so that this does not occur using code similar to the line below.
     //      See here for further discussion: https://github.com/Alex311/TableCellWithAutoLayout/commit/bde387b27e33605eeac3465475d2f2ff9775f163#commitcomment-4633188
     // self.contentView.bounds = CGRectMake(0.0f, 0.0f, 99999.0f, 99999.0f);
-    
-    [UIView autoSetPriority:UILayoutPriorityRequired forConstraints:^{
-        [self.titleLabel autoSetContentCompressionResistancePriorityForAxis:ALAxisVertical];
-    }];
+        
+//    [UIView autoSetPriority:UILayoutPriorityRequired forConstraints:^{
+//        [self.titleLabel autoSetContentCompressionResistancePriorityForAxis:ALAxisVertical];
+//    }];
     [self.titleLabel autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:kLabelVerticalInsets];
     [self.titleLabel autoPinEdgeToSuperviewEdge:ALEdgeLeading withInset:kLabelHorizontalInsets];
     [self.titleLabel autoPinEdgeToSuperviewEdge:ALEdgeTrailing withInset:kLabelHorizontalInsets];
@@ -81,9 +81,9 @@
     // See https://github.com/smileyborg/TableViewCellWithAutoLayout/issues/3 for more info.
     [self.bodyLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.titleLabel withOffset:kLabelVerticalInsets relation:NSLayoutRelationGreaterThanOrEqual];
     
-    [UIView autoSetPriority:UILayoutPriorityRequired forConstraints:^{
-        [self.bodyLabel autoSetContentCompressionResistancePriorityForAxis:ALAxisVertical];
-    }];
+//    [UIView autoSetPriority:UILayoutPriorityRequired forConstraints:^{
+//        [self.bodyLabel autoSetContentCompressionResistancePriorityForAxis:ALAxisVertical];
+//    }];
     [self.bodyLabel autoPinEdgeToSuperviewEdge:ALEdgeLeading withInset:kLabelHorizontalInsets];
     [self.bodyLabel autoPinEdgeToSuperviewEdge:ALEdgeTrailing withInset:kLabelHorizontalInsets];
     [self.bodyLabel autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:kLabelVerticalInsets];

@@ -8,7 +8,7 @@
 
 #import "BCHotTipView.h"
 #import "NSString+FontAwesome.h"
-#import "HexColor.h"
+#import "UIColor+Hex.h"
 
 @implementation BCHotTipView
 
